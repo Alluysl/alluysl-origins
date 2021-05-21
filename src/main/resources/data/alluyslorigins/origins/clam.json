@@ -5,9 +5,7 @@
 		"origins:water_breathing",
 		"origins:water_vision",
 		"origins:aqua_affinity",
-		"origins:aquatic",
-		"origins:conduit_power_on_land",
-		"origins:air_from_potions"
+		"origins:aquatic"
 	],
 	"icon": "conduit",
 	"order": 28800,
