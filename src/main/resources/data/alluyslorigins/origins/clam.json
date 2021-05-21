@@ -4,11 +4,13 @@
 		"origins:water_breathing",
 		"origins:water_vision",
 		"origins:aqua_affinity",
-		"origins:aquatic"
+		"origins:aquatic",
+		"origins:conduit_power_on_land",
+		"origins:air_from_potions"
 	],
 	"icon": "conduit",
-	"order": 1,
-	"impact": 2,
+	"order": 28800,
+	"impact": 3,
 	"name": "Clam",
 	"description": "Peaceful inhabitants of the ocean, clams are known to produce the wonders that are their pearls."
 }
