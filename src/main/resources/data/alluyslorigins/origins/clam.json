@@ -1,0 +1,14 @@
+{
+	"powers": [
+		"alluyslorigins:hidden_pearl",
+		"origins:water_breathing",
+		"origins:water_vision",
+		"origins:aqua_affinity",
+		"origins:aquatic"
+	],
+	"icon": "conduit",
+	"order": 1,
+	"impact": 1,
+	"name": "Clam",
+	"description": "PLACEHOLDER DESCRIPTION"
+}

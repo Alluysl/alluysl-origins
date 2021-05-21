@@ -1,0 +1,21 @@
+{
+	"type": "origins:active_self",
+	"name": "Hidden Pearl",
+	"description": "Everyday, you can produce a pearl.",
+	"entity_action": {
+		"type": "origins:give",
+		"stack": {
+			"item": "minecraft:ender_pearl"
+		}
+	},
+	"key": {
+		"key": "key.origins.secondary_active",
+		"continuous": false
+	},
+	"cooldown": 28800,
+	"hud_render": {
+		"should_render": true,
+		"sprite_location": "origins:textures/gui/community/spiderkolo/resource_bar_01.png",
+		"bar_index": 4
+	}
+}
