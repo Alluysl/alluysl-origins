@@ -1,29 +1,28 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "alluyslorigins",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Alluysl's Origins",
+  "description": "A mod that adds origins for the Origin mod",
   "authors": [
-    "Me!"
+    "Alluysl"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/Alluysl/alluysl-origins"
   },
 
-  "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "license": "https://github.com/Alluysl/alluysl-origins/blob/master/LICENSE",
+  "icon": "assets/alluyslorigins/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "alluysl.alluyslorigins.AlluyslOrigins"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "alluyslorigins.mixins.json"
   ],
 
   "depends": {
