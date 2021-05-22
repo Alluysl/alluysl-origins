@@ -12,7 +12,7 @@ An aquatic origin meant to be more sedentary than the merling.
 
 #### Hidden Pearl
 
-Every 24 minutes, you can get an ender pearl for free!
+Every 20 minutes, you can get an ender pearl for free!
 
 #### Sand Burrow
 
