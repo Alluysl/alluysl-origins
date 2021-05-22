@@ -22,7 +22,6 @@
     ]
   },
   "mixins": [
-    "alluyslorigins.mixins.json"
   ],
 
   "depends": {
