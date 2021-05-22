@@ -4,9 +4,9 @@ This is an attempt at a Fabric mod and my first attempt at any relevant mod for 
 
 ## Origins
 
-### Clam (WIP)
+Don't hesitate to give feedback about powers or balancing!
 
-It probably needs balancing so expect changes.
+### Clam
 
 An aquatic origin meant to be more sedentary than the merling.
 
