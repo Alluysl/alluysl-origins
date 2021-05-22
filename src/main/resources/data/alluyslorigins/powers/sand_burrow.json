@@ -10,6 +10,5 @@
     "name": "Sand Burrow break speed bonus",
     "value": 0.18,
     "operation": "addition"
-  },
-  "hidden": false
+  }
 }

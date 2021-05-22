@@ -33,3 +33,4 @@ Should this license change, the version(s) that apply are the ones that were pre
 Attribution:
  - this software bases itself on the Fabric example mod, which can be found here: https://github.com/FabricMC/fabric-example-mod
  - the icon has been edited from the icon of the Origins mod by apace100 (https://github.com/apace100/origins-fabric/blob/master/src/main/resources/assets/origins/icon.png) which is an upscaled version of the texture of the orb of origin from the same mod
+ - the clam shell power implementation is from CandyCaneCazoo's turtle origin, though the mechanic is expanded upon slightly
