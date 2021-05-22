@@ -1,7 +1,7 @@
 This license is inspired by that of the Independent JPEG Group. Many thanks for providing a basis.
 
 "Software" designates both the code as its source code and in its compiled form, as well as any asset embedded or provided with it.
-The "author(s)" are the contributor(s) to the project that are clearly stated as such in the source material. As an example, if that source material is a Git repository, the authors of the commits or people mentioned in the relevant files (README, LICENSE) or people mentioned in the source files, are such contributors.
+The "author(s)" are the contributor(s) to the project that are clearly stated as such in the source material. As an example, if that source material is a Git repository, the authors of the commits or people mentioned in the relevant files (README, LICENSE) or people mentioned in the source files as actively participating in the project, are such contributors. In the case of the intact parts of code repurposed from other projects, the license of these projects applies instead.
 
 TL;DR:
  - No warranty, no liability
