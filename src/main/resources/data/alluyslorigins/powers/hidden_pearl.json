@@ -1,7 +1,7 @@
 {
 	"type": "origins:active_self",
 	"name": "Hidden Pearl",
-	"description": "Everyday, you can produce a pearl.",
+	"description": "Everyday as your secondary power, you can produce a pearl.",
 	"entity_action": {
 		"type": "origins:give",
 		"stack": {
