@@ -1,12 +1,14 @@
 # Alluysl's Origins
 
-This is an attempt at a Fabric mod and my first attempt at any relevant mod for that matter. I'll see what I can do to make a mod that adds origins out of it. Let's see how it goes!
+A mod that adds one origin for now, and should add more in the future.
 
 ## Origins
 
 Don't hesitate to give feedback about powers or balancing!
 
 ### Clam
+
+Designed in close collaboration with [DrCrowller](https://github.com/DrCrowller).
 
 An aquatic origin meant to be more sedentary than the merling.
 
