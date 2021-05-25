@@ -1,0 +1,67 @@
+{
+	"type": "origins:multiple",
+	"name": "Natural Digger",
+	"description": "You are able to mine through blocks at a very high rate while underground, especially dirt.",
+	
+	"natural_digger_non_dirt": {
+		"type": "origins:modify_break_speed",
+		"block_condition": {
+			"type": "origins:in_tag",
+			"tag": "minecraft:dirt",
+			"inverted": true
+		},
+		"modifier": {
+			"name": "Natural Digger break speed bonus for non-dirt",
+			"value": 0.1,
+			"operation": "multiply_total"
+		}
+	},
+
+	"natural_digger_dirt": {
+		"type": "origins:modify_break_speed",
+		"block_condition": {
+			"type": "origins:in_tag",
+			"tag": "minecraft:dirt"
+		},
+		"modifier": {
+			"name": "Natural Digger break speed bonus for dirt",
+			"value": 10,
+			"operation": "multiply_total"
+		}
+	},
+
+	"natural_digger_non_dirt_burrow_bonus": {
+		"type": "origins:modify_break_speed",
+		"condition": {
+			"type": "origins:power_active",
+			"power": "alluyslorigins:burrow"
+		},
+		"block_condition": {
+			"type": "origins:in_tag",
+			"tag": "minecraft:dirt",
+			"inverted": true
+		},
+		"modifier": {
+			"name": "Natural Digger break speed bonus for non-dirt",
+			"value": 1.5,
+			"operation": "multiply_total"
+		}
+	},
+
+	"natural_digger_dirt_burrow_bonus": {
+		"type": "origins:modify_break_speed",
+		"condition": {
+			"type": "origins:power_active",
+			"power": "alluyslorigins:burrow"
+		},
+		"block_condition": {
+			"type": "origins:in_tag",
+			"tag": "minecraft:dirt"
+		},
+		"modifier": {
+			"name": "Natural Digger break speed bonus for dirt",
+			"value": 1.5,
+			"operation": "multiply_total"
+		}
+	}
+}

@@ -1,0 +1,95 @@
+{
+	"type": "origins:multiple",
+	"name": "Burrow",
+	"description": "You can switch to a state in which you are smaller, mine even faster, move more swiftly as long as you're between two blocks, but are blinded.",
+	
+	"toggle": {
+		"type": "origins:toggle",
+		"active_by_default": false,
+	},
+
+	"shrink": {
+		"type": "extraorigins:modify_size",
+		"scale": 0.5,
+		"condition": {
+			"type": "origins:power_active",
+			"power": "alluyslorigins:burrow"
+		}
+	},
+
+	"speed_boost": {
+		"type": "origins:conditioned_attribute",
+		"modifier": {
+			"name": "Burrow speed bonus",
+			"attribute": "minecraft:generic.movement_speed",
+			"value": 2,
+			"operation": "addition"
+		},
+		"tick_rate": 20,
+		"condition": {
+			"type": "origins:and",
+			"conditions": [
+				{
+					"type": "origins:power_active",
+					"power": "alluyslorigins:burrow"
+				},
+				{
+					"type": "origins:or",
+					"conditions": [
+						{
+							"type": "origins:and",
+							"conditions": [
+								{
+									"type": "origins:block_collision",
+									"offset_x": -1,
+									"offset_y": 0,
+									"offset_z": 0
+								}
+								{
+									"type": "origins:block_collision",
+									"offset_x": 1,
+									"offset_y": 0,
+									"offset_z": 0
+								}
+							]
+						}
+						{
+							"type": "origins:and",
+							"conditions": [
+								{
+									"type": "origins:block_collision",
+									"offset_x": 0,
+									"offset_y": -1,
+									"offset_z": 0
+								}
+								{
+									"type": "origins:block_collision",
+									"offset_x": 0,
+									"offset_y": 1,
+									"offset_z": 0
+								}
+							]
+						}
+						{
+							"type": "origins:and",
+							"conditions": [
+								{
+									"type": "origins:block_collision",
+									"offset_x": 0,
+									"offset_y": 0,
+									"offset_z": -1
+								}
+								{
+									"type": "origins:block_collision",
+									"offset_x": 0,
+									"offset_y": 0,
+									"offset_z": 1
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	}
+}

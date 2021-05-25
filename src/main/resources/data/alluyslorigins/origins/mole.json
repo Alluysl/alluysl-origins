@@ -1,0 +1,16 @@
+{
+	"powers": [
+		"alluyslorigins:natural_digger",
+		"alluyslorigins:underground_familiarity",
+		"alluyslorigins:burrow",
+		"alluyslorigins:crippling_sunlight",
+		"origins:strong_arms",
+		"origins:carnivore",
+		"origins-classes:no_mining_exhaustion"
+	],
+	"icon": "coarse_dirt",
+	"order": 417,
+	"impact": 1,
+	"name": "Mole",
+	"description": "Hidden beneath the surface of the Earth, these shy creatures excell at digging tunnels."
+}
