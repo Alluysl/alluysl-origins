@@ -1,19 +1,157 @@
 {
 	"type": "origins:multiple",
 	"name": "Burrow",
-	"description": "You can switch to a state in which you are smaller, mine even faster, move more swiftly as long as you're between two blocks, but are blinded.",
-	
-	"toggle": {
-		"type": "origins:toggle",
-		"active_by_default": false,
+	"description": "You can switch to a state in which you are smaller, mine even faster, and move more swiftly as long as you're between two blocks, but are blinded.",
+
+	"on": {
+		"type": "origins:resource",
+		"min": 0,
+		"max": 1,
+		"start_value": 0,
+		"hud_render": {
+			"should_render": false
+		}
 	},
 
-	"shrink": {
-		"type": "extraorigins:modify_size",
-		"scale": 0.5,
+	"toggle": {
+		"type": "origins:active_self",
+		"entity_action": {
+			"type": "origins:if_else",
+			"condition": {
+				"type": "origins:resource",
+				"resource": "alluyslorigins:burrow_on",
+				"comparison": "==",
+				"compare_to": 0
+			},
+			"if_action": {
+				"type": "origins:and",
+				"actions": [
+					{
+						"type": "origins:execute_command",
+						"command": "scale set pehkui:height 0.5 @s",
+						"permission_level": 4
+					},
+					{
+						"type": "origins:execute_command",
+						"command": "scale set pehkui:width 0.75 @s",
+						"permission_level": 4
+					},
+					{
+						"type": "origins:execute_command",
+						"command": "resource set @s alluyslorigins:burrow_on 1",
+						"permission_level": 4
+					}
+				]
+			},
+			"else_action": {
+				"type": "origins:and",
+				"actions": [
+					{
+						"type": "origins:execute_command",
+						"command": "scale set pehkui:height 1 @s",
+						"permission_level": 4
+					},
+					{
+						"type": "origins:execute_command",
+						"command": "scale set pehkui:width 1 @s",
+						"permission_level": 4
+					},
+					{
+						"type": "origins:execute_command",
+						"command": "resource set @s alluyslorigins:burrow_on 0",
+						"permission_level": 4
+					}
+				]
+			}
+		},
+		"cooldown": 0,
+		"hud_render": {
+			"should_render": false
+		}
+	},
+	
+	"power_lost": {
+
+		"type": "origins:action_on_callback",
+		"entity_action_lost": {
+			"type": "origins:and",
+			"actions": [
+				{
+					"type": "origins:execute_command",
+					"command": "scale set pehkui:height 1 @s",
+					"permission_level": 4
+				},
+				{
+					"type": "origins:execute_command",
+					"command": "scale set pehkui:width 1 @s",
+					"permission_level": 4
+				},
+				{
+					"type": "origins:execute_command",
+					"command": "resource set @s alluyslorigins:burrow_on 0",
+					"permission_level": 4
+				}
+			]
+		}
+	},
+
+	"blindness": {
+		"type": "origins:stacking_status_effect",
+		"min_stacks": 0,
+		"max_stacks": 1,
+		"duration_per_stack": 30,
+		"effects": [
+			{
+				"effect": "minecraft:blindness",
+				"is_ambient": true,
+				"show_particles": false,
+				"show_icon": true
+			}
+		],
 		"condition": {
-			"type": "origins:power_active",
-			"power": "alluyslorigins:burrow"
+			"type": "origins:resource",
+			"resource": "alluyslorigins:burrow_on",
+			"comparison": "==",
+			"compare_to": 1
+		}
+	},
+
+	"non_dirt_mining_speed_bonus": {
+		"type": "origins:modify_break_speed",
+		"condition": {
+			"type": "origins:resource",
+			"resource": "alluyslorigins:burrow_on",
+			"comparison": "==",
+			"compare_to": 1
+		},
+		"block_condition": {
+			"type": "origins:in_tag",
+			"tag": "c:dirt",
+			"inverted": true
+		},
+		"modifier": {
+			"name": "Burrow break speed bonus for non-dirt",
+			"value": 1.25,
+			"operation": "multiply_total"
+		}
+	},
+
+	"dirt_mining_speed_bonus": {
+		"type": "origins:modify_break_speed",
+		"condition": {
+			"type": "origins:resource",
+			"resource": "alluyslorigins:burrow_on",
+			"comparison": "==",
+			"compare_to": 1
+		},
+		"block_condition": {
+			"type": "origins:in_tag",
+			"tag": "c:dirt"
+		},
+		"modifier": {
+			"name": "Burrow break speed bonus for dirt",
+			"value": 1.375,
+			"operation": "multiply_total"
 		}
 	},
 
@@ -22,16 +160,22 @@
 		"modifier": {
 			"name": "Burrow speed bonus",
 			"attribute": "minecraft:generic.movement_speed",
-			"value": 2,
-			"operation": "addition"
+			"value": 1.25,
+			"operation": "multiply_base"
 		},
 		"tick_rate": 20,
 		"condition": {
 			"type": "origins:and",
 			"conditions": [
 				{
-					"type": "origins:power_active",
-					"power": "alluyslorigins:burrow"
+					"type": "origins:resource",
+					"resource": "alluyslorigins:burrow_on",
+					"comparison": "==",
+					"compare_to": 1
+				},
+				{
+					"type": "origins:exposed_to_sun",
+					"inverted": true
 				},
 				{
 					"type": "origins:or",
@@ -44,7 +188,7 @@
 									"offset_x": -1,
 									"offset_y": 0,
 									"offset_z": 0
-								}
+								},
 								{
 									"type": "origins:block_collision",
 									"offset_x": 1,
@@ -52,7 +196,7 @@
 									"offset_z": 0
 								}
 							]
-						}
+						},
 						{
 							"type": "origins:and",
 							"conditions": [
@@ -61,7 +205,7 @@
 									"offset_x": 0,
 									"offset_y": -1,
 									"offset_z": 0
-								}
+								},
 								{
 									"type": "origins:block_collision",
 									"offset_x": 0,
@@ -69,7 +213,7 @@
 									"offset_z": 0
 								}
 							]
-						}
+						},
 						{
 							"type": "origins:and",
 							"conditions": [
@@ -78,7 +222,7 @@
 									"offset_x": 0,
 									"offset_y": 0,
 									"offset_z": -1
-								}
+								},
 								{
 									"type": "origins:block_collision",
 									"offset_x": 0,

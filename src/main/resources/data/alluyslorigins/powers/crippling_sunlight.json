@@ -4,7 +4,7 @@
 	"description": "You are not fit for the light of the sun and become slower and weaker when you're exposed to it.",
 	"min_stacks": 0,
 	"max_stacks": 1,
-	"duration_per_stack": 1,
+	"duration_per_stack": 20,
 	"effects": [
 		{
 			"effect": "minecraft:weakness",

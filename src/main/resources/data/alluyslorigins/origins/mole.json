@@ -10,7 +10,7 @@
 	],
 	"icon": "coarse_dirt",
 	"order": 417,
-	"impact": 1,
+	"impact": 2,
 	"name": "Mole",
 	"description": "Hidden beneath the surface of the Earth, these shy creatures excell at digging tunnels."
 }
