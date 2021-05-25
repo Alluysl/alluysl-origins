@@ -33,11 +33,6 @@
 					},
 					{
 						"type": "origins:execute_command",
-						"command": "scale set pehkui:width 0.75 @s",
-						"permission_level": 4
-					},
-					{
-						"type": "origins:execute_command",
 						"command": "resource set @s alluyslorigins:burrow_on 1",
 						"permission_level": 4
 					}
@@ -49,11 +44,6 @@
 					{
 						"type": "origins:execute_command",
 						"command": "scale set pehkui:height 1 @s",
-						"permission_level": 4
-					},
-					{
-						"type": "origins:execute_command",
-						"command": "scale set pehkui:width 1 @s",
 						"permission_level": 4
 					},
 					{
@@ -79,11 +69,6 @@
 				{
 					"type": "origins:execute_command",
 					"command": "scale set pehkui:height 1 @s",
-					"permission_level": 4
-				},
-				{
-					"type": "origins:execute_command",
-					"command": "scale set pehkui:width 1 @s",
 					"permission_level": 4
 				},
 				{
@@ -286,7 +271,7 @@
 			"operation": "multiply_total"
 		},
 		"condition": {
-			"type": "origin:resource",
+			"type": "origins:resource",
 			"resource": "alluyslorigins:burrow_on",
 			"comparison": "==",
 			"compare_to": 1
