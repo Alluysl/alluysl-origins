@@ -1,5 +1,20 @@
 {
-	"type": "origins:simple",
+	"type": "origins:multiple",
 	"name": "Underground Familiarity",
-	"description": "Your eyes are fit for the dark, granting you night vision, and you're less hungry while underground."
+	"description": "Your eyes are fit for the dark, granting you night vision, and you're less hungry while underground.",
+
+	"night_vision": {
+		"type": "origins:stacking_status_effect",
+		"min_stacks": 1,
+		"max_stacks": 1,
+		"duration_per_stack": 240,
+		"effects": [
+			{
+				"effect": "minecraft:night_vision",
+				"is_ambient": true,
+				"show_particles": false,
+				"show_icon": false
+			}
+		]
+	}
 }
