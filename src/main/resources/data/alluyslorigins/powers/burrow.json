@@ -165,38 +165,16 @@
 							"type": "origins:and",
 							"conditions": [
 								{
-									"type": "origins:or",
-									"conditions": [
-										{
-											"type": "origins:block_collision",
-											"offset_x": -1,
-											"offset_y": 0,
-											"offset_z": 0
-										},
-										{
-											"type": "origins:block_collision",
-											"offset_x": -2,
-											"offset_y": 0,
-											"offset_z": 0
-										}
-									]
+									"type": "origins:block_collision",
+									"offset_x": -1,
+									"offset_y": 0,
+									"offset_z": 0
 								},
 								{
-									"type": "origins:or",
-									"conditions": [
-										{
-											"type": "origins:block_collision",
-											"offset_x": 1,
-											"offset_y": 0,
-											"offset_z": 0
-										},
-										{
-											"type": "origins:block_collision",
-											"offset_x": 2,
-											"offset_y": 0,
-											"offset_z": 0
-										}
-									]
+									"type": "origins:block_collision",
+									"offset_x": 1,
+									"offset_y": 0,
+									"offset_z": 0
 								}
 							]
 						},
@@ -221,38 +199,16 @@
 							"type": "origins:and",
 							"conditions": [
 								{
-									"type": "origins:or",
-									"conditions": [
-										{
-											"type": "origins:block_collision",
-											"offset_x": 0,
-											"offset_y": 0,
-											"offset_z": -1
-										},
-										{
-											"type": "origins:block_collision",
-											"offset_x": 0,
-											"offset_y": 0,
-											"offset_z": -2
-										}
-									]
+									"type": "origins:block_collision",
+									"offset_x": 0,
+									"offset_y": 0,
+									"offset_z": -1
 								},
 								{
-									"type": "origins:or",
-									"conditions": [
-										{
-											"type": "origins:block_collision",
-											"offset_x": 0,
-											"offset_y": 0,
-											"offset_z": 1
-										},
-										{
-											"type": "origins:block_collision",
-											"offset_x": 0,
-											"offset_y": 0,
-											"offset_z": 2
-										}
-									]
+									"type": "origins:block_collision",
+									"offset_x": 0,
+									"offset_y": 0,
+									"offset_z": 1
 								}
 							]
 						}
