@@ -1,9 +1,9 @@
 {
 	"powers": [
 		"alluyslorigins:natural_digger",
-		"alluyslorigins:underground_familiarity",
-		"alluyslorigins:burrow",
 		"origins:strong_arms",
+		"alluyslorigins:burrow",
+		"alluyslorigins:underground_familiarity",
 		"origins:carnivore"
 	],
 	"icon": "coarse_dirt",

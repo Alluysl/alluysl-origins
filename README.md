@@ -27,3 +27,27 @@ You get armor, even more when sneaking, since your shell protects you.
 #### Usual water powers
 
 You can breathe underwater, but not on land. You see and mine underwater as well as on land. However you don't get the sink prevention, extra swim speed, conduit power on land, or air from potions that merlings have.
+
+### Mole
+
+An origin fit for digging tunnels and inhabiting tight dwellings below the surface.
+
+#### Natural Digger
+
+You mine blocks faster when you're underground, and dirt-like blocks even faster.
+
+#### Strong Arms
+
+You can break stone with your bare hands, though it may be slow.
+
+#### Burrow
+
+Using your primary active, you can switch back and forth between your usual state and one where you're smaller, mine faster, and move quicker when you're between two blocks. However in that state you're blinded.
+
+#### Underground Familiarity
+
+You're slower and weaker when you're exposed to the sun, but when you're underground, you exhaust slower. You also get permanent night vision.
+
+#### Carnivore
+
+You can only eat meat, as actual moles feed from worms.
