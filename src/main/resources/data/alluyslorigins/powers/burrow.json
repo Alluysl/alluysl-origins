@@ -1,7 +1,7 @@
 {
 	"type": "origins:multiple",
 	"name": "Burrow",
-	"description": "You can switch to a state in which you are smaller, mine even faster, and move more swiftly as long as you're between two blocks, but are blinded.",
+	"description": "You can switch to a state in which you are smaller, mine even faster, and move more swiftly as long as you're between two blocks, but while in that state you are also blinded.",
 
 	"on": {
 		"type": "origins:resource",

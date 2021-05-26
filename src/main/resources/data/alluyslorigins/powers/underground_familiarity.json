@@ -1,7 +1,7 @@
 {
 	"type": "origins:multiple",
 	"name": "Underground Familiarity",
-	"description": "Your eyes are fit for the dark, granting you night vision, and you're less hungry while underground.",
+	"description": "Your eyes are fit for the dark, granting you permanent night vision, but not for the light of the sun, making you slower and weaker when exposed to it. Additionally, you are less hungry while underground.",
 
 	"night_vision": {
 		"type": "origins:stacking_status_effect",
@@ -16,6 +16,30 @@
 				"show_icon": false
 			}
 		]
+	},
+
+	"sunlight_aversion": {
+		"type": "origins:stacking_status_effect",
+		"min_stacks": 0,
+		"max_stacks": 1,
+		"duration_per_stack": 20,
+		"effects": [
+			{
+				"effect": "minecraft:weakness",
+				"is_ambient": true,
+				"show_particles": false,
+				"show_icon": true
+			},
+			{
+				"effect": "minecraft:slowness",
+				"is_ambient": true,
+				"show_particles": false,
+				"show_icon": true
+			}
+		],
+		"condition": {
+			"type": "origins:exposed_to_sun"
+		}
 	},
 
 	"reduced_exhaustion": {
