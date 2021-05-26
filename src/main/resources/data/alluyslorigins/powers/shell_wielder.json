@@ -1,14 +1,27 @@
 {
-    "type": "origins:conditioned_attribute",
+    "type": "origins:multiple",
     "name": "Shell Wielder",
     "description": "Your shell grants you protection, even more so when closing it by crouching.",
-    "modifier": {
-        "attribute": "minecraft:generic.armor",
-        "operation": "addition",
-        "value": 2
+
+    "baseline": {
+        "type": "origins:attribute",
+        "modifier": {
+            "attribute": "minecraft:generic.armor",
+            "operation": "addition",
+            "value": 2
+        }
     },
-    "tick_rate": 20,
-    "condition": {
-        "type": "origins:sneaking"
+
+    "hide": {
+        "type": "origins:conditioned_attribute",
+        "modifier": {
+            "attribute": "minecraft:generic.armor",
+            "operation": "addition",
+            "value": 2
+        },
+        "tick_rate": 20,
+        "condition": {
+            "type": "origins:sneaking"
+        }
     }
 }
