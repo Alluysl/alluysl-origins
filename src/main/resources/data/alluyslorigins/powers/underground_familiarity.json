@@ -20,8 +20,11 @@
 
 	"reduced_exhaustion": {
 		"type": "origins:modify_exhaustion",
-		"operation": "multiply_total",
-		"value": -0.5,
+		"modifier": {
+			"name": "Underground Familiarity exhaustion reduction",
+			"operation": "multiply_total",
+			"value": -0.5
+		},
 		"condition": {
 			"type": "origins:exposed_to_sky",
 			"inverted": true
