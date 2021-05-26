@@ -1,7 +1,7 @@
 {
 	"type": "origins:multiple",
 	"name": "Natural Digger",
-	"description": "You are able to mine through blocks at a higher rate while underground, especially dirt.",
+	"description": "You are able to mine through blocks faster while underground, especially dirt.",
 	
 	"non_dirt": {
 		"type": "origins:modify_break_speed",
@@ -16,8 +16,8 @@
 		},
 		"modifier": {
 			"name": "Natural Digger break speed bonus for non-dirt",
-			"value": 1.1,
-			"operation": "multiply_total"
+			"value": 0.25,
+			"operation": "multiply_base"
 		}
 	},
 
@@ -33,8 +33,8 @@
 		},
 		"modifier": {
 			"name": "Natural Digger break speed bonus for dirt",
-			"value": 1.2,
-			"operation": "multiply_total"
+			"value": 0.5,
+			"operation": "multiply_base"
 		}
 	}
 }

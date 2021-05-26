@@ -84,7 +84,7 @@
 		"type": "origins:stacking_status_effect",
 		"min_stacks": 0,
 		"max_stacks": 1,
-		"duration_per_stack": 30,
+		"duration_per_stack": 60,
 		"effects": [
 			{
 				"effect": "minecraft:blindness",
@@ -116,7 +116,7 @@
 		},
 		"modifier": {
 			"name": "Burrow break speed bonus for non-dirt",
-			"value": 1.25,
+			"value": 0.375,
 			"operation": "multiply_total"
 		}
 	},
@@ -135,7 +135,7 @@
 		},
 		"modifier": {
 			"name": "Burrow break speed bonus for dirt",
-			"value": 1.375,
+			"value": 0.5,
 			"operation": "multiply_total"
 		}
 	},
