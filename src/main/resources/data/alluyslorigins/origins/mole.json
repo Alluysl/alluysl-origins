@@ -5,8 +5,7 @@
 		"alluyslorigins:burrow",
 		"alluyslorigins:crippling_sunlight",
 		"origins:strong_arms",
-		"origins:carnivore",
-		"origins-classes:no_mining_exhaustion"
+		"origins:carnivore"
 	],
 	"icon": "coarse_dirt",
 	"order": 417,
