@@ -1,6 +1,6 @@
 # Alluysl's Origins
 
-A mod that adds one origin for now, and should add more in the future.
+A mod that adds two origins for now, and should add more in the future.
 
 ## Origins
 
