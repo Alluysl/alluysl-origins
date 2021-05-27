@@ -101,6 +101,19 @@
 		}
 	},
 
+	"skin_tint": {
+		"type": "origins:model_color",
+		"red": 0.5,
+		"green": 0.4,
+		"blue": 0.2,
+		"condition": {
+			"type": "origins:resource",
+			"resource": "alluyslorigins:burrow_on",
+			"comparison": "==",
+			"compare_to": 1
+		}
+	},
+
 	"non_dirt_mining_speed_bonus": {
 		"type": "origins:modify_break_speed",
 		"condition": {
