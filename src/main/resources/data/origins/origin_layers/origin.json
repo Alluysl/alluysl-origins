@@ -2,7 +2,6 @@
 	"replace": false,
 	"origins": [
 		"alluyslorigins:clam",
-		"alluyslorigins:mole",
-		"alluyslorigins:test"
+		"alluyslorigins:mole"
 	]
 }
