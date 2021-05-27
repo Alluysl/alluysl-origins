@@ -42,6 +42,47 @@
 		}
 	},
 
+	"eye_burn_on": {
+		"type": "origins:resource",
+		"min": 0,
+		"max": 1,
+		"start_value": 0,
+		"hud_render": {
+			"should_render": false
+		}
+	},
+
+	"eye_burn_update": {
+		"type": "origins:action_over_time",
+		"_description": "Explanation: https://github.com/apace100/origins-fabric/issues/312",
+		"entity_action": {
+			"type":"origins:if_else",
+			"condition": {
+				"type": "origins:exposed_to_sun"
+			},
+			"if_action": {
+				"type": "origins:execute_command",
+				"command": "resource set @s alluyslorigins:underground_familiarity_eye_burn_on 1"
+			},
+			"else_action": {
+				"type": "origins:execute_command",
+				"command": "resource set @s alluyslorigins:underground_familiarity_eye_burn_on 0"
+			}
+		},
+		"interval": 20
+	},
+
+	"eye_burn": {
+		"type": "origins:shader",
+		"shader": "alluyslorigins:shaders/post/brightness_bomb.json",
+		"condition": {
+			"type": "origins:resource",
+			"resource": "alluyslorigins:underground_familiarity_eye_burn_on",
+			"comparison": "==",
+			"compare_to": 1
+		}
+	},
+
 	"reduced_exhaustion": {
 		"type": "origins:modify_exhaustion",
 		"modifier": {
