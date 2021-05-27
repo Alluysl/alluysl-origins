@@ -1,0 +1,86 @@
+{
+	"type": "origins:multiple",
+
+	"is_exposed": {
+		"type": "origins:resource",
+		"min": 0,
+		"max": 1,
+		"start_value": 0,
+		"hud_render": {
+			"should_render": false
+		}
+	},
+
+	"update_exposed": {
+		"type": "origins:action_over_time",
+		"entity_action": {
+			"type":"origins:if_else",
+			"condition": {
+				"type": "origins:exposed_to_sun"
+			},
+			"if_action": {
+				"type": "origins:execute_command",
+				"command": "resource set @s alluyslorigins:test_is_exposed 1"
+			},
+			"else_action": {
+				"type": "origins:execute_command",
+				"command": "resource set @s alluyslorigins:test_is_exposed 0"
+			}
+		},
+		"interval": 20
+	},
+
+	"comparison_power_meant_to_show_that_things_are_triggered_properly_for_this_power_type": {
+		"type": "origins:stacking_status_effect",
+		"min_stacks": 0,
+		"max_stacks": 1,
+		"duration_per_stack": 20,
+		"effects": [
+			{
+				"effect": "minecraft:weakness",
+				"is_ambient": true,
+				"show_particles": false,
+				"show_icon": true
+			}
+		],
+		"condition": {
+			"type": "origins:resource",
+			"resource": "alluyslorigins:test_is_exposed",
+			"comparison": "==",
+			"compare_to": 1
+		}
+	},
+
+	"shader_power_that_has_the_issue": {
+		"type": "origins:shader",
+		"shader": "minecraft:shaders/post/pencil.json",
+		"condition": {
+			"type": "origins:resource",
+			"resource": "alluyslorigins:test_is_exposed",
+			"comparison": "==",
+			"compare_to": 1
+		}
+	},
+
+	"tell_whether_brightness_condition_is_fullfilled_every_second_for_reference": {
+		"type": "origins:action_over_time",
+		"entity_action": {
+			"type": "origins:if_else",
+			"condition": {
+				"type": "origins:resource",
+				"resource": "alluyslorigins:test_is_exposed",
+				"comparison": "==",
+				"compare_to": 1
+			},
+			"if_action": {
+				"type": "origins:execute_command",
+				"command": "say true"
+			},
+			"else_action": {
+				"type": "origins:execute_command",
+				"command": "say false"
+			}
+		},
+		"interval": 20
+	}
+}
