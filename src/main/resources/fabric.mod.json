@@ -29,7 +29,7 @@
     "fabric": "*",
     "minecraft": "1.16.x",
     "origins": ">=0.7.1",
-    "pehkui": ">=2.1.0+21w18a"
+    "pehkui": ">=2.1.0"
   },
   "suggests": {
     "another-mod": "*"
