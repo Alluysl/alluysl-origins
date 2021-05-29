@@ -54,7 +54,7 @@ Using your primary active, you can switch back and forth between your usual stat
 
 #### Sensitive Eyes
 
-You have permanent night vision but strong brightness hurts your eyes, making you weaker and slower over time when exposed to it.
+You have permanent night vision but strong brightness hurts your eyes, making you weaker and slower over time when exposed to it, and applying shaders of different strengths to make it more dramatic.
 
 #### Carnivore
 
