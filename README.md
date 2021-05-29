@@ -42,13 +42,17 @@ You mine blocks faster when you're underground, and dirt-like blocks even faster
 
 You can break stone with your bare hands, though it may be slow.
 
+#### Underground Familiarity
+
+You exhaust 60% slower when underground.
+
 #### Burrow
 
 Using your primary active, you can switch back and forth between your usual state and one where you're smaller, mine faster, and move quicker when you're between two blocks. However in that state you're blinded.
 
-#### Underground Familiarity
+#### Sensitive Eyes
 
-You're slower and weaker when you're exposed to the sun, but when you're underground, you exhaust slower. You also get permanent night vision.
+You have permanent night vision but strong brightness hurts your eyes, making you weaker and slower over time when exposed to it.
 
 #### Carnivore
 

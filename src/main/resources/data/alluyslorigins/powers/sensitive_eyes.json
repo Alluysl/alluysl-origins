@@ -1,0 +1,248 @@
+{
+	"type": "origins:multiple",
+	"name": "Sensitive Eyes",
+	"description": "Your eyes are fit for the dark, granting you permanent night vision, but not for bright lights, making you slower and weaker when exposed to them.",
+
+	"night_vision": {
+		"type": "origins:stacking_status_effect",
+		"min_stacks": 1,
+		"max_stacks": 1,
+		"duration_per_stack": 240,
+		"effects": [
+			{
+				"effect": "minecraft:night_vision",
+				"is_ambient": true,
+				"show_particles": false,
+				"show_icon": false
+			}
+		]
+	},
+
+	"strain": {
+		"type": "origins:resource",
+		"min": 0,
+		"max": 240,
+		"start_value": 0,
+		"hud_render": {
+			"should_render": true,
+			"sprite_location": "origins:textures/gui/community/spiderkolo/resource_bar_02.png",
+			"bar_index": 24
+		}
+	},
+
+	"strain_update": {
+		"type": "origins:action_over_time",
+		"entity_action": {
+			"type":"origins:if_else_list",
+			"actions": [
+				{
+					"condition": {
+						"type": "origins:brightness",
+						"comparison": ">",
+						"compare_to": 0.8
+					},
+					"action": {
+						"type": "origins:execute_command",
+						"command": "resource change @s alluyslorigins:sensitive_eyes_strain 2"
+					}
+				},
+				{
+					"condition": {
+						"type": "origins:brightness",
+						"comparison": ">",
+						"compare_to": 0.7
+					},
+					"action": {
+						"type": "origins:execute_command",
+						"command": "resource change @s alluyslorigins:sensitive_eyes_strain 1"
+					}
+				},
+				{
+					"condition": {
+						"type": "origins:brightness",
+						"comparison": ">",
+						"compare_to": 0.6
+					},
+					"action": {
+						"type": "origins:execute_command",
+						"command": "resource change @s alluyslorigins:sensitive_eyes_strain -1"
+					}
+				},
+				{
+					"condition": {
+						"type": "origins:brightness",
+						"comparison": ">",
+						"compare_to": 0.5
+					},
+					"action": {
+						"type": "origins:execute_command",
+						"command": "resource change @s alluyslorigins:sensitive_eyes_strain -2"
+					}
+				},
+				{
+					"condition": {
+						"type": "origins:brightness",
+						"comparison": ">",
+						"compare_to": 0.4
+					},
+					"action": {
+						"type": "origins:execute_command",
+						"command": "resource change @s alluyslorigins:sensitive_eyes_strain -4"
+					}
+				},
+				{
+					"condition": {
+						"type": "origins:brightness",
+						"comparison": ">",
+						"compare_to": 0.3
+					},
+					"action": {
+						"type": "origins:execute_command",
+						"command": "resource change @s alluyslorigins:sensitive_eyes_strain -8"
+					}
+				},
+				{
+					"condition": {
+						"type": "origins:brightness",
+						"comparison": ">",
+						"compare_to": 0.2
+					},
+					"action": {
+						"type": "origins:execute_command",
+						"command": "resource change @s alluyslorigins:sensitive_eyes_strain -16"
+					}
+				},
+				{
+					"action": {
+						"type": "origins:execute_command",
+						"command": "resource change @s alluyslorigins:sensitive_eyes_strain -32"
+					},
+					"condition": {
+						"type": "origins:constant",
+						"value": true
+					}
+				}
+			]
+		},
+		"interval": 5
+	},
+
+	"weakness_effect": {
+		"type": "origins:stacking_status_effect",
+		"min_stacks": 0,
+		"max_stacks": 1,
+		"duration_per_stack": 20,
+		"effects": [
+			{
+				"effect": "minecraft:weakness",
+				"is_ambient": true,
+				"show_particles": false,
+				"show_icon": true
+			}
+		],
+		"condition": {
+			"type": "origins:resource",
+			"resource": "alluyslorigins:sensitive_eyes_strain",
+			"comparison": ">=",
+			"compare_to": 12
+		}
+	},
+
+	"slowness_effect": {
+		"type": "origins:stacking_status_effect",
+		"min_stacks": 0,
+		"max_stacks": 1,
+		"duration_per_stack": 20,
+		"effects": [
+			{
+				"effect": "minecraft:slowness",
+				"is_ambient": true,
+				"show_particles": false,
+				"show_icon": true
+			}
+		],
+		"condition": {
+			"type": "origins:resource",
+			"resource": "alluyslorigins:sensitive_eyes_strain",
+			"comparison": ">=",
+			"compare_to": 60
+		}
+	},
+
+	"slowness_increased_effect": {
+		"type": "origins:stacking_status_effect",
+		"min_stacks": 0,
+		"max_stacks": 1,
+		"duration_per_stack": 20,
+		"effects": [
+			{
+				"effect": "minecraft:slowness",
+				"is_ambient": true,
+				"show_particles": false,
+				"show_icon": true,
+				"amplifier": 1
+			}
+		],
+		"condition": {
+			"type": "origins:resource",
+			"resource": "alluyslorigins:sensitive_eyes_strain",
+			"comparison": ">=",
+			"compare_to": 240
+		}
+	},
+
+	"eye_burn_light": {
+		"type": "origins:shader",
+		"shader": "alluyslorigins:shaders/post/sunbathed_light.json",
+		"condition": {
+			"type": "origins:and",
+			"conditions": [
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:sensitive_eyes_strain",
+					"comparison": ">=",
+					"compare_to": 12
+				},
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:sensitive_eyes_strain",
+					"comparison": "<",
+					"compare_to": 60
+				}
+			]
+		}
+	},
+
+	"eye_burn_medium": {
+		"type": "origins:shader",
+		"shader": "alluyslorigins:shaders/post/sunbathed.json",
+		"condition": {
+			"type": "origins:and",
+			"conditions": [
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:sensitive_eyes_strain",
+					"comparison": ">=",
+					"compare_to": 60
+				},
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:sensitive_eyes_strain",
+					"comparison": "<",
+					"compare_to": 240
+				}
+			]
+		}
+	},
+
+	"eye_burn_heavy": {
+		"type": "origins:shader",
+		"shader": "alluyslorigins:shaders/post/sunbathed_heavy.json",
+		"condition": {
+			"type": "origins:resource",
+			"resource": "alluyslorigins:sensitive_eyes_strain",
+			"comparison": ">=",
+			"compare_to": 240
+		}
+	}
+}
