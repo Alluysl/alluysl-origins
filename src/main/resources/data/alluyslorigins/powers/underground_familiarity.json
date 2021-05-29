@@ -1,18 +1,14 @@
 {
-	"type": "origins:multiple",
+	"type": "origins:modify_exhaustion",
 	"name": "Underground Familiarity",
 	"description": "You are less hungry while underground.",
-
-	"reduced_exhaustion": {
-		"type": "origins:modify_exhaustion",
-		"modifier": {
-			"name": "Underground Familiarity exhaustion reduction",
-			"operation": "multiply_total",
-			"value": -0.6
-		},
-		"condition": {
-			"type": "origins:exposed_to_sky",
-			"inverted": true
-		}
+	"modifier": {
+		"name": "Underground Familiarity exhaustion reduction",
+		"operation": "multiply_total",
+		"value": -0.6
+	},
+	"condition": {
+		"type": "origins:exposed_to_sky",
+		"inverted": true
 	}
 }
