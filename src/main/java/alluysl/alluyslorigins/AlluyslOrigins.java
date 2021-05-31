@@ -3,6 +3,9 @@ package alluysl.alluyslorigins;
 import net.fabricmc.api.ModInitializer;
 
 public class AlluyslOrigins implements ModInitializer {
+
+	public static final String MODID = "alluyslorigins";
+
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
