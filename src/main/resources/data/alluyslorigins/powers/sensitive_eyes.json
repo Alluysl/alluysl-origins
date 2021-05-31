@@ -42,8 +42,9 @@
 						"compare_to": 0.8
 					},
 					"action": {
-						"type": "origins:execute_command",
-						"command": "resource change @s alluyslorigins:sensitive_eyes_strain 2"
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:sensitive_eyes_strain",
+						"change": 2
 					}
 				},
 				{
@@ -53,8 +54,9 @@
 						"compare_to": 0.7
 					},
 					"action": {
-						"type": "origins:execute_command",
-						"command": "resource change @s alluyslorigins:sensitive_eyes_strain 1"
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:sensitive_eyes_strain",
+						"change": 1
 					}
 				},
 				{
@@ -64,8 +66,9 @@
 						"compare_to": 0.6
 					},
 					"action": {
-						"type": "origins:execute_command",
-						"command": "resource change @s alluyslorigins:sensitive_eyes_strain -1"
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:sensitive_eyes_strain",
+						"change": -1
 					}
 				},
 				{
@@ -75,8 +78,9 @@
 						"compare_to": 0.5
 					},
 					"action": {
-						"type": "origins:execute_command",
-						"command": "resource change @s alluyslorigins:sensitive_eyes_strain -2"
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:sensitive_eyes_strain",
+						"change": -2
 					}
 				},
 				{
@@ -86,8 +90,9 @@
 						"compare_to": 0.4
 					},
 					"action": {
-						"type": "origins:execute_command",
-						"command": "resource change @s alluyslorigins:sensitive_eyes_strain -4"
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:sensitive_eyes_strain",
+						"change": -4
 					}
 				},
 				{
@@ -97,8 +102,9 @@
 						"compare_to": 0.3
 					},
 					"action": {
-						"type": "origins:execute_command",
-						"command": "resource change @s alluyslorigins:sensitive_eyes_strain -8"
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:sensitive_eyes_strain",
+						"change": -8
 					}
 				},
 				{
@@ -108,14 +114,16 @@
 						"compare_to": 0.2
 					},
 					"action": {
-						"type": "origins:execute_command",
-						"command": "resource change @s alluyslorigins:sensitive_eyes_strain -16"
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:sensitive_eyes_strain",
+						"change": -16
 					}
 				},
 				{
 					"action": {
-						"type": "origins:execute_command",
-						"command": "resource change @s alluyslorigins:sensitive_eyes_strain -32"
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:sensitive_eyes_strain",
+						"change": -32
 					},
 					"condition": {
 						"type": "origins:constant",
