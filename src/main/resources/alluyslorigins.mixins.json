@@ -4,9 +4,9 @@
   "package": "alluysl.alluyslorigins.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "TestMixin"
   ],
   "client": [
+    "GameRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

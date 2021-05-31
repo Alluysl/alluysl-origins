@@ -1,0 +1,10 @@
+{
+	"type": "origins:simple",
+	"condition": {
+		"type": "origins:resource",
+		"resource": "alluyslorigins:burrow_on",
+		"comparison": "==",
+		"compare_to": 1
+	},
+	"hidden": true
+}

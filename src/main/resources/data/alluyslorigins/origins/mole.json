@@ -4,9 +4,9 @@
 		"origins:strong_arms",
 		"alluyslorigins:underground_familiarity",
 		"alluyslorigins:burrow",
+		"alluyslorigins:burrow_overlay",
 		"alluyslorigins:sensitive_eyes",
-		"origins:carnivore",
-		"alluyslorigins:test"
+		"origins:carnivore"
 	],
 	"icon": "coarse_dirt",
 	"order": 417,
