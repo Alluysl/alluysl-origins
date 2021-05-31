@@ -5,7 +5,8 @@
 		"alluyslorigins:underground_familiarity",
 		"alluyslorigins:burrow",
 		"alluyslorigins:sensitive_eyes",
-		"origins:carnivore"
+		"origins:carnivore",
+		"alluyslorigins:test"
 	],
 	"icon": "coarse_dirt",
 	"order": 417,

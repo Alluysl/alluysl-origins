@@ -4,9 +4,9 @@
   "package": "alluysl.alluyslorigins.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "TestMixin"
   ],
   "client": [
-    "the example mixin was here (for reference)"
   ],
   "injectors": {
     "defaultRequire": 1

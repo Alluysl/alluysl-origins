@@ -1,6 +1,7 @@
 package alluysl.alluyslorigins;
 
 import net.fabricmc.api.ModInitializer;
+import alluysl.alluyslorigins.power.AlluyslOriginsPowers;
 
 public class AlluyslOrigins implements ModInitializer {
 
@@ -12,6 +13,8 @@ public class AlluyslOrigins implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		System.out.println("Alluysl's Origins initialized.");
+		System.out.println("[Alluysl's Origins] Mod initialized.");
+
+		AlluyslOriginsPowers.init();
 	}
 }
