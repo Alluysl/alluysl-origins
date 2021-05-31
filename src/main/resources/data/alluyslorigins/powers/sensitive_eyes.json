@@ -4,18 +4,8 @@
 	"description": "Your eyes are fit for the dark, granting you permanent night vision, but not for bright lights, making you slower and weaker when exposed to them.",
 
 	"night_vision": {
-		"type": "origins:stacking_status_effect",
-		"min_stacks": 1,
-		"max_stacks": 1,
-		"duration_per_stack": 240,
-		"effects": [
-			{
-				"effect": "minecraft:night_vision",
-				"is_ambient": true,
-				"show_particles": false,
-				"show_icon": false
-			}
-		]
+		"type": "origins:night_vision",
+		"strength": 0.8
 	},
 
 	"strain": {
