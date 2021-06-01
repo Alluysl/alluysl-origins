@@ -44,8 +44,8 @@ public abstract class GameRendererMixin {
         BufferBuilder bufferBuilder = tessellator.getBuffer();
         bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE);
         // I presume the Z coordinate don't matter, and they don't seem to do, but why put -90 specifically then? It's weird
-        bufferBuilder.vertex(left, top + height, -90.0D).texture(0.0F, 2.0F).next(); // bottom left
-        bufferBuilder.vertex(left + width, top + height, -90.0D).texture(-1.0F, 1.0F).next(); // bottom right
+        bufferBuilder.vertex(left, top + height, -90.0D).texture(0.0F, 1.0F).next(); // bottom left
+        bufferBuilder.vertex(left + width, top + height, -90.0D).texture(1.0F, 1.0F).next(); // bottom right
         bufferBuilder.vertex(left + width, top, -90.0D).texture(1.0F, 0.0F).next(); // top right
         bufferBuilder.vertex(left, top, -90.0D).texture(0.0F, 0.0F).next(); // top left
         tessellator.draw();
