@@ -56,7 +56,7 @@ public abstract class GameRendererMixin {
         RenderSystem.enableDepthTest();
     }
 
-    private int ticksSinceStart = -1;
+    private int framesSinceStart = -1;
 
     // Heavily based on Origin's game renderer phantomzied overlay mixin
 
@@ -68,13 +68,13 @@ public abstract class GameRendererMixin {
     private void drawBurrowOverlay(CallbackInfo ci) {
         if(!this.client.player.hasStatusEffect(StatusEffects.NAUSEA)) {
             if (AlluyslOriginsPowers.BURROW_OVERLAY.isActive(this.client.player)){
-                if (ticksSinceStart < 30)
-                    ++ticksSinceStart;
-            } else if (ticksSinceStart > 0)
-                --ticksSinceStart;
-            if (ticksSinceStart > 0)
-                this.drawBurrowOverlayOnScreen(MathHelper.sqrt(ticksSinceStart / 30.0F), 0.2F, 0.1F, 0.05F);
+                if (framesSinceStart < 30)
+                    ++framesSinceStart;
+            } else if (framesSinceStart > 0)
+                --framesSinceStart;
+            if (framesSinceStart > 0)
+                this.drawBurrowOverlayOnScreen(MathHelper.sqrt(framesSinceStart / 30.0F), 0.2F, 0.1F, 0.05F);
         } else
-            ticksSinceStart = 0;
+            framesSinceStart = 0;
     }
 }
