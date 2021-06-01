@@ -1,0 +1,15 @@
+{
+	"powers": [
+		"alluyslorigins:black_and_white",
+		"alluyslorigins:chad",
+		"alluyslorigins:athletic",
+		"alluyslorigins:moisturized",
+		"alluyslorigins:slightly_taller"
+	],
+	"icon": "smooth_stone",
+	"order": 0,
+	"impact": 2,
+	"name": "Chad",
+	"description": "Enjoyer. Concept suggested by Bazzman#5639 on the Origins Discord server, powers by Alluysl. Not a serious origin.",
+	"unchoosable": true
+}

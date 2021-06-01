@@ -1,0 +1,6 @@
+{
+	"name": "Black and White",
+	"description": "You perceive everything in shades of grey.",
+	"type": "origins:shader",
+	"shader": "alluyslorigins:shaders/post/greyscale.json"
+}

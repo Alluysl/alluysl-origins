@@ -1,0 +1,312 @@
+{
+	"type": "origins:multiple",
+	"name": "Moisturized",
+	"description": "You exhaust slower when your skin is wet.",
+
+	"moisture": {
+		"type": "origins:resource",
+		"min": 0,
+		"max": 140,
+		"hud_render": {
+			"bar_index": 1
+		}
+	},
+
+	"moisture_update_water": {
+		"type": "origins:action_over_time",
+		"interval": 20,
+		"entity_action": {
+			"type": "origins:if_else_list",
+			"actions": [
+				{
+					"condition": {
+						"type": "origins:submerged_in",
+						"fluid": "minecraft:water"
+					},
+					"action": {
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:moisturized_moisture",
+						"change": 4
+					}
+				},
+				{
+					"condition": {
+						"type": "origins:or",
+						"conditions": [
+							{
+								"type": "origins:fluid_height",
+								"fluid": "minecraft:water",
+								"comparison": ">",
+								"compare_to": 0
+							},
+							{
+								"type": "origins:in_rain"
+							}
+						]
+					},
+					"action": {
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:moisturized_moisture",
+						"change": 3
+					}
+				},
+				{
+					"condition": {
+						"type": "origins:biome",
+						"condition": {
+							"type": "origins:high_humidity"
+						}
+					},
+					"action": {
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:moisturized_moisture",
+						"change": 2
+					}
+				},
+				{
+					"condition": {
+						"type": "origins:block_in_radius",
+						"radius": 3,
+						"block_condition": {
+							"type": "origins:in_tag",
+							"tag": "minecraft:water"
+						},
+						"compare_to": 2
+					},
+					"action": {
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:moisturized_moisture",
+						"change": 1
+					}
+				},
+				{
+					"condition": {
+						"type": "origins:biome",
+						"condition": {
+							"type": "origins:precipitation",
+							"precipitation": "none",
+							"inverted": true
+						}
+					},
+					"action": {
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:moisturized_moisture",
+						"change": -1
+					}
+				}
+			]
+		}
+	},
+
+	"moisture_update_drought": {
+		"type": "origins:action_over_time",
+		"interval": 20,
+		"entity_action": {
+			"type": "origins:if_else_list",
+			"actions": [
+				{
+					"condition": {
+						"type": "origins:fluid_height",
+						"fluid": "minecraft:lava",
+						"comparison": ">",
+						"compare_to": 0
+					},
+					"action": {
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:moisturized_moisture",
+						"change": -4
+					}
+				},
+				{
+					"condition": {
+						"type": "origins:on_fire"
+					},
+					"action": {
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:moisturized_moisture",
+						"change": -3
+					}
+				},
+				{
+					"condition": {
+						"type": "origins:or",
+						"conditions": [
+							{
+								"type": "origins:biome",
+								"condition": {
+									"type": "origins:precipitation",
+									"precipitation": "none"
+								}
+							},
+							{
+								"type": "origins:dimension",
+								"dimension": "minecraft:nether"
+							}
+						]
+					},
+					"action": {
+						"type": "origins:change_resource",
+						"resource": "alluyslorigins:moisturized_moisture",
+						"change": -2
+					}
+				}
+			]
+		}
+	},
+
+	"moisturized": {
+		"type": "origins:modify_exhaustion",
+		"modifier": {
+			"name": "Moisturized exhaustion reduction",
+			"operation": "multiply_total",
+			"value": -0.1
+		},
+		"condition": {
+			"type": "origins:and",
+			"conditions": [
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:moisturized_moisture",
+					"comparison": ">",
+					"compare_to": 0
+				},
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:moisturized_moisture",
+					"comparison": "<=",
+					"compare_to": 20
+				}
+			]
+		}
+	},
+
+	"moisturized_2": {
+		"type": "origins:modify_exhaustion",
+		"modifier": {
+			"name": "Moisturized exhaustion reduction",
+			"operation": "multiply_total",
+			"value": -0.2
+		},
+		"condition": {
+			"type": "origins:and",
+			"conditions": [
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:moisturized_moisture",
+					"comparison": ">",
+					"compare_to": 20
+				},
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:moisturized_moisture",
+					"comparison": "<=",
+					"compare_to": 40
+				}
+			]
+		}
+	},
+
+	"moisturized_3": {
+		"type": "origins:modify_exhaustion",
+		"modifier": {
+			"name": "Moisturized exhaustion reduction",
+			"operation": "multiply_total",
+			"value": -0.3
+		},
+		"condition": {
+			"type": "origins:and",
+			"conditions": [
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:moisturized_moisture",
+					"comparison": ">",
+					"compare_to": 40
+				},
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:moisturized_moisture",
+					"comparison": "<=",
+					"compare_to": 60
+				}
+			]
+		}
+	},
+
+	"moisturized_4": {
+		"type": "origins:modify_exhaustion",
+		"modifier": {
+			"name": "Moisturized exhaustion reduction",
+			"operation": "multiply_total",
+			"value": -0.4
+		},
+		"condition": {
+			"type": "origins:and",
+			"conditions": [
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:moisturized_moisture",
+					"comparison": ">",
+					"compare_to": 60
+				},
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:moisturized_moisture",
+					"comparison": "<=",
+					"compare_to": 80
+				}
+			]
+		}
+	},
+
+	"moisturized_5": {
+		"type": "origins:modify_exhaustion",
+		"modifier": {
+			"name": "Moisturized exhaustion reduction",
+			"operation": "multiply_total",
+			"value": -0.5
+		},
+		"condition": {
+			"type": "origins:and",
+			"conditions": [
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:moisturized_moisture",
+					"comparison": ">",
+					"compare_to": 80
+				},
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:moisturized_moisture",
+					"comparison": "<=",
+					"compare_to": 120
+				}
+			]
+		}
+	},
+
+	"moisturized_6": {
+		"type": "origins:modify_exhaustion",
+		"modifier": {
+			"name": "Moisturized exhaustion reduction",
+			"operation": "multiply_total",
+			"value": -0.6
+		},
+		"condition": {
+			"type": "origins:and",
+			"conditions": [
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:moisturized_moisture",
+					"comparison": ">",
+					"compare_to": 120
+				},
+				{
+					"type": "origins:resource",
+					"resource": "alluyslorigins:moisturized_moisture",
+					"comparison": "<=",
+					"compare_to": 140
+				}
+			]
+		}
+	}
+}

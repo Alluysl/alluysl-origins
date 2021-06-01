@@ -1,0 +1,32 @@
+{
+	"type": "origins:multiple",
+	"name": "The Chad",
+	"description": "You're so confident you take halved non-void damage, but you're nice with players and living mobs and deal four times less damage to them.",
+
+	"rock_solid": {
+		"type": "origins:modify_damage_taken",
+		"modifier": {
+			"name": "Halved damage taken",
+			"operation": "multiply_total",
+			"value": -0.5
+		},
+		"damage_condition": {
+			"name": "outOfWorld",
+			"inverted": true
+		}
+	},
+
+	"nice_dude": {
+		"type": "origins:modify_damage_dealt",
+		"modifier": {
+			"name": "Eighth damage dealt",
+			"operation": "multiply_total",
+			"value": -0.75
+		},
+		"target_condition": {
+			"type": "origins:entity_group",
+			"group": "undead",
+			"inverted": true
+		}
+	}
+}

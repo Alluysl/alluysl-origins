@@ -1,0 +1,13 @@
+{
+	"name": "Tall",
+	"description": "You're half a block taller, be careful with those door frames!",
+	"type": "origins:action_on_callback",
+	"entity_action_added": {
+		"type": "origins:execute_command",
+		"command": "scale set pehkui:height 1.25 @s"
+	},
+	"entity_action_removed": {
+		"type": "origins:execute_command",
+		"command": "scale set pehkui:height 1 @s"
+	}
+}

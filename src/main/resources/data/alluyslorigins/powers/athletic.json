@@ -1,0 +1,16 @@
+{
+	"name": "Athletic",
+	"description": "Your fit body allows you to go faster when you're less than 35% hungry.",
+	"type": "origins:conditioned_attribute",
+	"modifier": {
+		"name": "Athletic speed increase",
+		"attribute": "minecraft:generic.movement_speed",
+		"operation": "multiply_base",
+		"value": 0.125
+	},
+	"condition": {
+		"type": "origins:food_level",
+		"comparison": ">",
+		"compare_to": 13
+	}
+}
