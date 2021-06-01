@@ -22,32 +22,32 @@ public abstract class GameRendererMixin {
     @Final
     private static Identifier field_26730;
 
-    // Code from Mojang, mapping from Yarn, few edits from me, essentially a modified method_31136
+    // Code from Mojang, mapping from Yarn, few edits from me, essentially a modified method_31136 (from GameRenderer)
     private void drawBurrowOverlayOnScreen(float ratio, float r, float g, float b) {
-        int w = this.client.getWindow().getScaledWidth();
-        int h = this.client.getWindow().getScaledHeight();
-        double d = MathHelper.lerp((double)ratio, 2.0D, 1.0D);
+        int clientWidth = this.client.getWindow().getScaledWidth();
+        int clientHeight = this.client.getWindow().getScaledHeight();
+        double scale = MathHelper.lerp((double)ratio, 2.0D, 1.0D);
         r *= ratio;
         g *= ratio;
         b *= ratio;
-        double wA = (double)w * d;
-        double hA = (double)h * d;
-        double wB = ((double)w - wA) / 2.0D;
-        double hB = ((double)h - hA) / 2.0D;
+        double width = (double)clientWidth * scale;
+        double height = (double)clientHeight * scale;
+        double left = ((double)clientWidth - width) / 2.0D;
+        double top = ((double)clientHeight - height) / 2.0D;
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE);
-        RenderSystem.color4f(r, g, b, 1.0F);
+        RenderSystem.color4f(r, g, b, 1.0F); // alpha has no effect
         this.client.getTextureManager().bindTexture(field_26730);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
         bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE);
-        // A goes from 2x to x, B goes from -0.5x to 0, A+B goes from 1.5x to x for x the width or height
-        bufferBuilder.vertex(wB, hB + hA, -90.0D).texture(0.0F, 1.0F).next(); // bottom left
-        bufferBuilder.vertex(wB + wA, hB + hA, -90.0D).texture(1.0F, 1.0F).next(); // bottom right
-        bufferBuilder.vertex(wB + wA, hB, -90.0D).texture(1.0F, 0.0F).next(); // top right
-        bufferBuilder.vertex(wB, hB, -90.0D).texture(0.0F, 0.0F).next(); // top left
+        // I presume the Z coordinate don't matter, and they don't seem to do, but why put -90 specifically then? It's weird
+        bufferBuilder.vertex(left, top + height, -90.0D).texture(0.0F, 2.0F).next(); // bottom left
+        bufferBuilder.vertex(left + width, top + height, -90.0D).texture(-1.0F, 1.0F).next(); // bottom right
+        bufferBuilder.vertex(left + width, top, -90.0D).texture(1.0F, 0.0F).next(); // top right
+        bufferBuilder.vertex(left, top, -90.0D).texture(0.0F, 0.0F).next(); // top left
         tessellator.draw();
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.defaultBlendFunc();
