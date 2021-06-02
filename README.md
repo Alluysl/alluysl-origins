@@ -1,6 +1,6 @@
 # Alluysl's Origins
 
-A mod that adds two origins (plus one easter egg origin) for now, and should add more in the future.
+A mod that adds two origins for now, and should add more in the future.
 
 <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api"><img src="https://i.imgur.com/HabVZJR.png" alt="Requires Fabric API" width="180" height="60" /></a>
 <a href="https://www.curseforge.com/minecraft/mc-mods/origins"><img src="https://media.discordapp.net/attachments/817078792463187988/831319512464490496/origins_badge.png" alt="Requires Origins" width="180" height="60" /></a>
@@ -59,31 +59,3 @@ You have permanent night vision but strong brightness hurts your eyes, making yo
 #### Carnivore
 
 You can only eat meat, as actual moles feed from worms.
-
-## Easter egg origin
-
-Only accessible through commands: `/origin set @s origins:origin alluyslorigins:chad`
-
-### Chad
-
-Made for fun after someone suggested it.
-
-#### Black and White
-
-You see the world in greyscale.
-
-#### The Chad
-
-You take half the normal damage from everything but the void but you only deal a quarted of the normal damage to non-undead entities (including players).
-
-#### Athletic
-
-You go a bit faster if your hunger bar isn't too empty.
-
-#### Moisturized
-
-You're less hungry when your skin is wet.
-
-#### Tall
-
-You're half a block taller - you can still fit through two-block-high gaps by crouching.
