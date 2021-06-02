@@ -50,11 +50,11 @@ You exhaust 60% slower when underground.
 
 #### Burrow
 
-Using your primary active, you can switch back and forth between your usual state and one where you're smaller, mine faster, and move quicker when you're between two blocks. However in that state you're blinded.
+Using your primary active, you can switch back and forth between your usual state and one where you're smaller, mine faster, and move quicker when you're between two blocks. However in that state you're blinded. A little overlay pops up when you're burrowed to make it more immersive.
 
 #### Sensitive Eyes
 
-You have permanent night vision but strong brightness hurts your eyes, making you weaker and slower over time when exposed to it, and applying shaders of different strengths to make it more dramatic.
+You have permanent night vision but strong brightness hurts your eyes, making you weaker and slower over time when exposed to it, and applying visual effects of different strengths to make it more dramatic.
 
 #### Carnivore
 
