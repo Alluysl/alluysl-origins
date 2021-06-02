@@ -22,24 +22,15 @@ public abstract class GameRendererMixin {
     @Final
     private static Identifier field_26730;
 
-    // Code from Mojang, mapping from Yarn, few edits from me, essentially a modified method_31136 (from GameRenderer)
-    private void drawBurrowOverlayOnScreen(float ratio, float r, float g, float b) {
-        int clientWidth = this.client.getWindow().getScaledWidth();
-        int clientHeight = this.client.getWindow().getScaledHeight();
-        double scale = MathHelper.lerp((double)ratio, 2.0D, 1.0D);
-        r *= ratio;
-        g *= ratio;
-        b *= ratio;
-        double width = (double)clientWidth * scale;
-        double height = (double)clientHeight * scale;
-        double left = ((double)clientWidth - width) / 2.0D;
-        double top = ((double)clientHeight - height) / 2.0D;
+    // Code from Mojang, mapping from Yarn, some edits from me, essentially a modified method_31136 (from GameRenderer)
+
+    private void drawOverlay(float r, float g, float b, double left, double top, double width, double height, Identifier texture){
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE);
         RenderSystem.color4f(r, g, b, 1.0F); // alpha has no effect
-        this.client.getTextureManager().bindTexture(field_26730);
+        this.client.getTextureManager().bindTexture(texture);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
         bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE);
@@ -54,6 +45,36 @@ public abstract class GameRendererMixin {
         RenderSystem.disableBlend();
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
+    }
+
+    private void drawOverlay(float r, float g, float b, double left, double top, double width, double height, String texturePath) {
+        drawOverlay(r, g, b, left, top, width, height, new Identifier(texturePath));
+    }
+
+    private void drawOverlay(float ratio, float r, float g, float b, double startScale, double endScale, Identifier texture) {
+        int clientWidth = this.client.getWindow().getScaledWidth();
+        int clientHeight = this.client.getWindow().getScaledHeight();
+        double scale = MathHelper.lerp((double)ratio, startScale, endScale);
+        r *= ratio;
+        g *= ratio;
+        b *= ratio;
+        double width = (double)clientWidth * scale;
+        double height = (double)clientHeight * scale;
+        double left = ((double)clientWidth - width) / 2.0D;
+        double top = ((double)clientHeight - height) / 2.0D;
+        drawOverlay(r, g, b, left, top, width, height, texture);
+    }
+
+    private void drawOverlay(float ratio, float r, float g, float b, double startScale, double endScale, String texturePath) {
+        drawOverlay(ratio, r, g, b, startScale, endScale, new Identifier(texturePath));
+    }
+
+        private void drawOverlay(float ratio, float r, float g, float b){
+        drawOverlay(ratio, r, g, b, 2.0D, 1.0D, field_26730);
+    }
+
+    private void drawOverlay(float r, float g, float b){
+        drawOverlay(1.0F, r, g, b);
     }
 
     private int baseTick = 0;
@@ -90,7 +111,7 @@ public abstract class GameRendererMixin {
                 baseTick += 2 * (currentTick - previousTick); // catch up with the current tick to deactivate
 
             if (currentTick > baseTick)
-                this.drawBurrowOverlayOnScreen(MathHelper.sqrt((float)(currentTick - baseTick) / duration), 0.2F, 0.1F, 0.05F);
+                this.drawOverlay(MathHelper.sqrt((float)(currentTick - baseTick) / duration), 0.2F, 0.1F, 0.05F);
             else
                 baseTick = currentTick; // avoid going under minimum activation
 
