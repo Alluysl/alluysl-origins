@@ -15,8 +15,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static org.lwjgl.opengl.GL14.GL_FUNC_ADD;
+import static org.lwjgl.opengl.GL14.GL_FUNC_SUBTRACT;
+import static org.lwjgl.opengl.GL14.GL_FUNC_REVERSE_SUBTRACT;
+import static org.lwjgl.opengl.GL14.GL_MIN;
+import static org.lwjgl.opengl.GL14.GL_MAX;
+
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
+
+    private final int NO_BLEND = 0;
 
     @Shadow
     @Final
@@ -24,12 +32,17 @@ public abstract class GameRendererMixin {
 
     // Code from Mojang, mapping from Yarn, some edits from me, essentially a modified method_31136 (from GameRenderer)
 
-    private void drawOverlay(float r, float g, float b, double left, double top, double width, double height, Identifier texture){
+    private void drawOverlay(float r, float g, float b, int blendMode, double left, double top, double width, double height, Identifier texture){
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
-        RenderSystem.enableBlend();
-        RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE);
+        if (blendMode != NO_BLEND){
+            RenderSystem.enableBlend();
+            if (blendMode != GL_FUNC_ADD)
+                RenderSystem.blendEquation(blendMode);
+        }
+        RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE); // in my case it doesn't seem to be doing anything but I guess ensuring nothing has messed with it is beneficial?
         RenderSystem.color4f(r, g, b, 1.0F); // alpha has no effect (including from the texture itself, the blend is additive with full alpha)
+
         this.client.getTextureManager().bindTexture(texture);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
@@ -40,24 +53,36 @@ public abstract class GameRendererMixin {
         bufferBuilder.vertex(left + width, top, -90.0D).texture(1.0F, 0.0F).next(); // top right
         bufferBuilder.vertex(left, top, -90.0D).texture(0.0F, 0.0F).next(); // top left
         tessellator.draw();
+
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.defaultBlendFunc();
-        RenderSystem.disableBlend();
+        if (blendMode != NO_BLEND){
+            if (blendMode != GL_FUNC_ADD)
+                RenderSystem.blendEquation(GL_FUNC_ADD);
+            RenderSystem.disableBlend();
+        }
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
     }
     private void drawOverlay(float r, float g, float b, double left, double top, double width, double height, String texturePath) {
-        drawOverlay(r, g, b, left, top, width, height, new Identifier(texturePath));
+        drawOverlay(r, g, b, GL_FUNC_ADD, left, top, width, height, new Identifier(texturePath));
+    }
+
+    private void drawOverlay(int blendMode, double left, double top, double width, double height, Identifier texture){
+        drawOverlay(1.0F, 1.0F, 1.0F, blendMode, left, top, width, height, texture);
+    }
+    private void drawOverlay(int blendMode, double left, double top, double width, double height, String texturePath){
+        drawOverlay(blendMode, left, top, width, height, new Identifier(texturePath));
     }
 
     private void drawOverlay(double left, double top, double width, double height, Identifier texture){
-        drawOverlay(1.0F, 1.0F, 1.0F, left, top, width, height, texture);
+        drawOverlay(GL_FUNC_ADD, left, top, width, height, texture);
     }
     private void drawOverlay(double left, double top, double width, double height, String texturePath){
         drawOverlay(left, top, width, height, new Identifier(texturePath));
     }
 
-    private void drawOverlay(float ratio, float r, float g, float b, double startScale, double endScale, Identifier texture) {
+    private void drawOverlay(float ratio, float r, float g, float b, int blendMode, double startScale, double endScale, Identifier texture) {
         int clientWidth = this.client.getWindow().getScaledWidth();
         int clientHeight = this.client.getWindow().getScaledHeight();
         double scale = MathHelper.lerp(ratio, startScale, endScale);
@@ -68,7 +93,14 @@ public abstract class GameRendererMixin {
         double height = (double)clientHeight * scale;
         double left = ((double)clientWidth - width) / 2.0D;
         double top = ((double)clientHeight - height) / 2.0D;
-        drawOverlay(r, g, b, left, top, width, height, texture);
+        drawOverlay(r, g, b, blendMode, left, top, width, height, texture);
+    }
+    private void drawOverlay(float ratio, float r, float g, float b, int blendMode, double startScale, double endScale, String texturePath){
+        drawOverlay(ratio, r, g, b, blendMode, startScale, endScale, new Identifier(texturePath));
+    }
+
+    private void drawOverlay(float ratio, float r, float g, float b, double startScale, double endScale, Identifier texture){
+        drawOverlay(ratio, r, g, b, GL_FUNC_ADD, startScale, endScale, texture);
     }
     private void drawOverlay(float ratio, float r, float g, float b, double startScale, double endScale, String texturePath) {
         drawOverlay(ratio, r, g, b, startScale, endScale, new Identifier(texturePath));
@@ -102,6 +134,10 @@ public abstract class GameRendererMixin {
     @Final
     private MinecraftClient client;
 
+//    private int test = GL_FUNC_ADD;
+//    private String testt = "add";
+//    private int testtt = 0;
+
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"))
     private void drawBurrowOverlay(CallbackInfo ci) {
         int currentTick = ticks;
@@ -126,7 +162,7 @@ public abstract class GameRendererMixin {
                 baseTick += 2 * (currentTick - previousTick); // catch up with the current tick to deactivate
 
             if (currentTick > baseTick)
-                this.drawOverlay(MathHelper.sqrt((float)(currentTick - baseTick) / duration), 0.2F, 0.1F, 0.05F);
+                drawOverlay(MathHelper.sqrt((float)(currentTick - baseTick) / duration), 0.2F, 0.1F, 0.05F);
             else
                 baseTick = currentTick; // avoid going under minimum activation
 
@@ -134,5 +170,19 @@ public abstract class GameRendererMixin {
             baseTick = currentTick;
 
         previousTick = currentTick;
+
+//        if (currentTick % 100 == 99 && currentTick != testtt){
+//            testtt = currentTick;
+//            switch (test){
+//                case GL_FUNC_ADD: test = GL_FUNC_SUBTRACT; testt = "sub"; break;
+//                case GL_FUNC_SUBTRACT: test = GL_FUNC_REVERSE_SUBTRACT; testt = "sub r"; break;
+//                case GL_FUNC_REVERSE_SUBTRACT: test = GL_MIN; testt = "min"; break;
+//                case GL_MIN: test = GL_MAX; testt = "max"; break;
+//                case GL_MAX: test = NO_BLEND; testt = "no blend"; break;
+//                default: test = GL_FUNC_ADD; testt = "add";
+//            }
+//        }
+//        System.out.println(testt);
+//        drawOverlay(test,10, 10, 200, 200, "textures/misc/forcefield.png");
     }
 }
