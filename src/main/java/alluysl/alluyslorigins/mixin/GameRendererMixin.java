@@ -46,9 +46,15 @@ public abstract class GameRendererMixin {
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
     }
-
     private void drawOverlay(float r, float g, float b, double left, double top, double width, double height, String texturePath) {
         drawOverlay(r, g, b, left, top, width, height, new Identifier(texturePath));
+    }
+
+    private void drawOverlay(double left, double top, double width, double height, Identifier texture){
+        drawOverlay(1.0F, 1.0F, 1.0F, left, top, width, height, texture);
+    }
+    private void drawOverlay(double left, double top, double width, double height, String texturePath){
+        drawOverlay(left, top, width, height, new Identifier(texturePath));
     }
 
     private void drawOverlay(float ratio, float r, float g, float b, double startScale, double endScale, Identifier texture) {
@@ -64,12 +70,18 @@ public abstract class GameRendererMixin {
         double top = ((double)clientHeight - height) / 2.0D;
         drawOverlay(r, g, b, left, top, width, height, texture);
     }
-
     private void drawOverlay(float ratio, float r, float g, float b, double startScale, double endScale, String texturePath) {
         drawOverlay(ratio, r, g, b, startScale, endScale, new Identifier(texturePath));
     }
 
-        private void drawOverlay(float ratio, float r, float g, float b){
+    private void drawOverlay(float ratio, double startScale, double endScale, Identifier texture){
+        drawOverlay(ratio, 1.0F, 1.0F, 1.0F, startScale, endScale, texture);
+    }
+    private void drawOverlay(float ratio, double startScale, double endScale, String texturePath){
+        drawOverlay(ratio, startScale, endScale, new Identifier(texturePath));
+    }
+
+    private void drawOverlay(float ratio, float r, float g, float b){
         drawOverlay(ratio, r, g, b, 2.0D, 1.0D, field_26730);
     }
 
