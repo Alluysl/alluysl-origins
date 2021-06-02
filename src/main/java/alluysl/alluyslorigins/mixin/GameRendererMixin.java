@@ -56,7 +56,12 @@ public abstract class GameRendererMixin {
         RenderSystem.enableDepthTest();
     }
 
-    private int framesSinceStart = -1;
+    private int baseTick = 0;
+    private int previousTick = 0;
+
+    public boolean bypassNauseaCheck = true;
+
+    @Shadow private int ticks;
 
     // Heavily based on Origin's game renderer phantomzied overlay mixin
 
@@ -66,15 +71,32 @@ public abstract class GameRendererMixin {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"))
     private void drawBurrowOverlay(CallbackInfo ci) {
-        if(!this.client.player.hasStatusEffect(StatusEffects.NAUSEA)) {
+        int currentTick = ticks;
+        int duration = 10;
+
+        if (baseTick == 0){ // first time
+            if (AlluyslOriginsPowers.BURROW_OVERLAY.isActive(this.client.player))
+                baseTick = currentTick - duration;
+            else
+                baseTick = currentTick;
+        }
+
+        if(bypassNauseaCheck || !this.client.player.hasStatusEffect(StatusEffects.NAUSEA)) {
+
             if (AlluyslOriginsPowers.BURROW_OVERLAY.isActive(this.client.player)){
-                if (framesSinceStart < 30)
-                    ++framesSinceStart;
-            } else if (framesSinceStart > 0)
-                --framesSinceStart;
-            if (framesSinceStart > 0)
-                this.drawBurrowOverlayOnScreen(MathHelper.sqrt(framesSinceStart / 30.0F), 0.2F, 0.1F, 0.05F);
+                if (currentTick > baseTick + duration)
+                    baseTick = currentTick - duration; // avoid going over maximum activation
+            } else
+                baseTick += 2 * (currentTick - previousTick); // catch up with the current tick to deactivate
+
+            if (currentTick > baseTick)
+                this.drawBurrowOverlayOnScreen(MathHelper.sqrt((float)(currentTick - baseTick) / duration), 0.2F, 0.1F, 0.05F);
+            else
+                baseTick = currentTick; // avoid going under minimum activation
+
         } else
-            framesSinceStart = 0;
+            baseTick = currentTick;
+
+        previousTick = currentTick;
     }
 }
