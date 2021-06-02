@@ -50,7 +50,7 @@ You exhaust 60% slower when underground.
 
 #### Burrow
 
-Using your primary active, you can switch back and forth between your usual state and one where you're smaller, mine faster, and move quicker when you're between two blocks. However in that state you're blinded. A little overlay pops up when you're burrowed to make it more immersive.
+Using your primary active, you can switch back and forth between your usual state and one where you're smaller, mine faster, and move quicker when you're between two blocks. However in that state you're blinded! A little overlay also pops up when you're burrowed to make it more immersive.
 
 #### Sensitive Eyes
 
