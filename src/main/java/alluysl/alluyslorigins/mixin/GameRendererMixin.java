@@ -29,12 +29,12 @@ public abstract class GameRendererMixin {
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE);
-        RenderSystem.color4f(r, g, b, 1.0F); // alpha has no effect
+        RenderSystem.color4f(r, g, b, 1.0F); // alpha has no effect (including from the texture itself, the blend is additive with full alpha)
         this.client.getTextureManager().bindTexture(texture);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
         bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE);
-        // I presume the Z coordinate don't matter, and they don't seem to do, but why put -90 specifically then? It's weird
+        // I presume the Z coordinates don't matter, and they don't seem to do, but why put -90 specifically then? It's weird
         bufferBuilder.vertex(left, top + height, -90.0D).texture(0.0F, 1.0F).next(); // bottom left
         bufferBuilder.vertex(left + width, top + height, -90.0D).texture(1.0F, 1.0F).next(); // bottom right
         bufferBuilder.vertex(left + width, top, -90.0D).texture(1.0F, 0.0F).next(); // top right
@@ -60,7 +60,7 @@ public abstract class GameRendererMixin {
     private void drawOverlay(float ratio, float r, float g, float b, double startScale, double endScale, Identifier texture) {
         int clientWidth = this.client.getWindow().getScaledWidth();
         int clientHeight = this.client.getWindow().getScaledHeight();
-        double scale = MathHelper.lerp((double)ratio, startScale, endScale);
+        double scale = MathHelper.lerp(ratio, startScale, endScale);
         r *= ratio;
         g *= ratio;
         b *= ratio;
@@ -106,6 +106,9 @@ public abstract class GameRendererMixin {
     private void drawBurrowOverlay(CallbackInfo ci) {
         int currentTick = ticks;
         int duration = 10;
+
+        if (this.client.player == null)
+            return;
 
         if (baseTick == 0){ // first time
             if (AlluyslOriginsPowers.BURROW_OVERLAY.isActive(this.client.player))
