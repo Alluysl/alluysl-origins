@@ -56,8 +56,6 @@ public abstract class GameRendererMixin {
             if (blendEquation != GL_FUNC_ADD) // default
                 RenderSystem.blendEquation(blendEquation);
             setBlendFunc();
-            RenderSystem.enableAlphaTest();
-            RenderSystem.alphaFunc(GL_GREATER, 0.0F);
         }
         RenderSystem.color4f(r, g, b, a);
 
@@ -74,8 +72,6 @@ public abstract class GameRendererMixin {
 
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         if (blendEquation != NO_BLEND){
-            RenderSystem.defaultAlphaFunc();
-            RenderSystem.disableAlphaTest();
             RenderSystem.defaultBlendFunc();
             if (blendEquation != GL_FUNC_ADD)
                 RenderSystem.blendEquation(GL_FUNC_ADD);
@@ -111,8 +107,8 @@ public abstract class GameRendererMixin {
         this.b = ratio * b;
         a = 1.0F;
         resetTexture();
-        srcFactor = dstFactor = srcAlpha = dstAlpha = GL_ONE;
         blendEquation = defaultBlendEquation;
+        srcFactor = dstFactor = srcAlpha = dstAlpha = GL_ONE;
         drawTexture();
     }
 
