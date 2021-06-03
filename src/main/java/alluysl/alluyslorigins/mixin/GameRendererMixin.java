@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL14.GL_FUNC_ADD;
 import static org.lwjgl.opengl.GL14.GL_FUNC_SUBTRACT;
 import static org.lwjgl.opengl.GL14.GL_FUNC_REVERSE_SUBTRACT;
@@ -25,100 +26,94 @@ import static org.lwjgl.opengl.GL14.GL_MAX;
 public abstract class GameRendererMixin {
 
     private final int NO_BLEND = 0;
+    private final int defaultBlendEquation = GL_FUNC_ADD;
+
+    private float r = 0, g = 0, b = 0, a = 1.0F;
+    private final double[][] vertices = new double[4][2];
+    private Identifier texture = null;
+    private int blendEquation = defaultBlendEquation;
+    private int srcFactor, dstFactor, srcAlpha, dstAlpha;
+
+    private void resetTexture(){ texture = null; }
+    private void setTexture(String path){ texture = new Identifier(path); }
 
     @Shadow
     @Final
     private static Identifier field_26730;
 
-    // Code from Mojang, mapping from Yarn, some edits from me, essentially a modified method_31136 (from GameRenderer)
+    // Original code for some of the following methods from Mojang, mapping from Yarn, research and some edits from me (splitting up, overloading, changing constants to arguments)
 
-    private void drawOverlay(float r, float g, float b, int blendMode, double left, double top, double width, double height, Identifier texture){
+    private void setBlendFunc() { // edited blendFuncSeparate
+        RenderSystem.assertThread(RenderSystem::isOnGameThread);
+        GlStateManager.blendFuncSeparate(srcFactor, dstFactor, srcAlpha, dstAlpha);
+    }
+
+    private void drawTexture(){ // edited method_31136 (second part)
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
-        if (blendMode != NO_BLEND){
+        if (blendEquation != NO_BLEND){
             RenderSystem.enableBlend();
-            if (blendMode != GL_FUNC_ADD)
-                RenderSystem.blendEquation(blendMode);
+            if (blendEquation != GL_FUNC_ADD) // default
+                RenderSystem.blendEquation(blendEquation);
+            setBlendFunc();
+            RenderSystem.enableAlphaTest();
+            RenderSystem.alphaFunc(GL_GREATER, 0.0F);
         }
-        RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ONE); // in my case it doesn't seem to be doing anything but I guess ensuring nothing has messed with it is beneficial?
-        RenderSystem.color4f(r, g, b, 1.0F); // alpha has no effect (including from the texture itself, the blend is additive with full alpha)
+        RenderSystem.color4f(r, g, b, a);
 
-        this.client.getTextureManager().bindTexture(texture);
+        this.client.getTextureManager().bindTexture(texture == null ? field_26730 : texture);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
-        bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE);
+        bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE); // draw mode 7 is quads, we'll draw a single one
         // I presume the Z coordinates don't matter, and they don't seem to do, but why put -90 specifically then? It's weird
-        bufferBuilder.vertex(left, top + height, -90.0D).texture(0.0F, 1.0F).next(); // bottom left
-        bufferBuilder.vertex(left + width, top + height, -90.0D).texture(1.0F, 1.0F).next(); // bottom right
-        bufferBuilder.vertex(left + width, top, -90.0D).texture(1.0F, 0.0F).next(); // top right
-        bufferBuilder.vertex(left, top, -90.0D).texture(0.0F, 0.0F).next(); // top left
+        bufferBuilder.vertex(vertices[0][0], vertices[0][1], -90.0D).texture(0.0F, 1.0F).next(); // bottom left
+        bufferBuilder.vertex(vertices[1][0], vertices[1][1], -90.0D).texture(1.0F, 1.0F).next(); // bottom right
+        bufferBuilder.vertex(vertices[2][0], vertices[2][1], -90.0D).texture(1.0F, 0.0F).next(); // top right
+        bufferBuilder.vertex(vertices[3][1], vertices[3][1], -90.0D).texture(0.0F, 0.0F).next(); // top left
         tessellator.draw();
 
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.defaultBlendFunc();
-        if (blendMode != NO_BLEND){
-            if (blendMode != GL_FUNC_ADD)
+        if (blendEquation != NO_BLEND){
+            RenderSystem.defaultAlphaFunc();
+            RenderSystem.disableAlphaTest();
+            RenderSystem.defaultBlendFunc();
+            if (blendEquation != GL_FUNC_ADD)
                 RenderSystem.blendEquation(GL_FUNC_ADD);
             RenderSystem.disableBlend();
         }
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
     }
-    private void drawOverlay(float r, float g, float b, double left, double top, double width, double height, String texturePath) {
-        drawOverlay(r, g, b, GL_FUNC_ADD, left, top, width, height, new Identifier(texturePath));
+
+    // Sets the texture as a rectangle from (left, top) to (left + width, top + height)
+    private void setTextureBoxed(double left, double top, double width, double height){
+        vertices[0][0] = vertices[3][0] = left;
+        vertices[0][1] = vertices[1][1] = top + height;
+        vertices[1][0] = vertices[2][0] = left + width;
+        vertices[2][1] = vertices[3][1] = top;
     }
 
-    private void drawOverlay(int blendMode, double left, double top, double width, double height, Identifier texture){
-        drawOverlay(1.0F, 1.0F, 1.0F, blendMode, left, top, width, height, texture);
-    }
-    private void drawOverlay(int blendMode, double left, double top, double width, double height, String texturePath){
-        drawOverlay(blendMode, left, top, width, height, new Identifier(texturePath));
-    }
-
-    private void drawOverlay(double left, double top, double width, double height, Identifier texture){
-        drawOverlay(GL_FUNC_ADD, left, top, width, height, texture);
-    }
-    private void drawOverlay(double left, double top, double width, double height, String texturePath){
-        drawOverlay(left, top, width, height, new Identifier(texturePath));
-    }
-
-    private void drawOverlay(float ratio, float r, float g, float b, int blendMode, double startScale, double endScale, Identifier texture) {
+    // Sets the texture as a rectangle of screen/window dimensions centered on the middle of it (Mojang + Yarn)
+    private void setTextureCentered(double scale) {
         int clientWidth = this.client.getWindow().getScaledWidth();
         int clientHeight = this.client.getWindow().getScaledHeight();
-        double scale = MathHelper.lerp(ratio, startScale, endScale);
-        r *= ratio;
-        g *= ratio;
-        b *= ratio;
         double width = (double)clientWidth * scale;
         double height = (double)clientHeight * scale;
         double left = ((double)clientWidth - width) / 2.0D;
         double top = ((double)clientHeight - height) / 2.0D;
-        drawOverlay(r, g, b, blendMode, left, top, width, height, texture);
-    }
-    private void drawOverlay(float ratio, float r, float g, float b, int blendMode, double startScale, double endScale, String texturePath){
-        drawOverlay(ratio, r, g, b, blendMode, startScale, endScale, new Identifier(texturePath));
+        setTextureBoxed(left, top, width, height);
     }
 
-    private void drawOverlay(float ratio, float r, float g, float b, double startScale, double endScale, Identifier texture){
-        drawOverlay(ratio, r, g, b, GL_FUNC_ADD, startScale, endScale, texture);
-    }
-    private void drawOverlay(float ratio, float r, float g, float b, double startScale, double endScale, String texturePath) {
-        drawOverlay(ratio, r, g, b, startScale, endScale, new Identifier(texturePath));
-    }
-
-    private void drawOverlay(float ratio, double startScale, double endScale, Identifier texture){
-        drawOverlay(ratio, 1.0F, 1.0F, 1.0F, startScale, endScale, texture);
-    }
-    private void drawOverlay(float ratio, double startScale, double endScale, String texturePath){
-        drawOverlay(ratio, startScale, endScale, new Identifier(texturePath));
-    }
-
-    private void drawOverlay(float ratio, float r, float g, float b){
-        drawOverlay(ratio, r, g, b, 2.0D, 1.0D, field_26730);
-    }
-
-    private void drawOverlay(float r, float g, float b){
-        drawOverlay(1.0F, r, g, b);
+    private void drawDefaultOverlay(float ratio, float r, float g, float b){
+        setTextureCentered(MathHelper.lerp(ratio, 2.0F, 1.0F));
+        this.r = ratio * r;
+        this.g = ratio * g;
+        this.b = ratio * b;
+        a = 1.0F;
+        resetTexture();
+        srcFactor = dstFactor = srcAlpha = dstAlpha = GL_ONE;
+        blendEquation = defaultBlendEquation;
+        drawTexture();
     }
 
     private int baseTick = 0;
@@ -134,9 +129,9 @@ public abstract class GameRendererMixin {
     @Final
     private MinecraftClient client;
 
-//    private int test = GL_FUNC_ADD;
-//    private String testt = "add";
-//    private int testtt = 0;
+//    private int testFuncVal = GL_FUNC_ADD;
+//    private String testFuncName = "add";
+//    private int testTick = 0;
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"))
     private void drawBurrowOverlay(CallbackInfo ci) {
@@ -162,7 +157,7 @@ public abstract class GameRendererMixin {
                 baseTick += 2 * (currentTick - previousTick); // catch up with the current tick to deactivate
 
             if (currentTick > baseTick)
-                drawOverlay(MathHelper.sqrt((float)(currentTick - baseTick) / duration), 0.2F, 0.1F, 0.05F);
+                drawDefaultOverlay(MathHelper.sqrt((float)(currentTick - baseTick) / duration), 0.2F, 0.1F, 0.05F);
             else
                 baseTick = currentTick; // avoid going under minimum activation
 
@@ -171,18 +166,30 @@ public abstract class GameRendererMixin {
 
         previousTick = currentTick;
 
-//        if (currentTick % 100 == 99 && currentTick != testtt){
-//            testtt = currentTick;
-//            switch (test){
-//                case GL_FUNC_ADD: test = GL_FUNC_SUBTRACT; testt = "sub"; break;
-//                case GL_FUNC_SUBTRACT: test = GL_FUNC_REVERSE_SUBTRACT; testt = "sub r"; break;
-//                case GL_FUNC_REVERSE_SUBTRACT: test = GL_MIN; testt = "min"; break;
-//                case GL_MIN: test = GL_MAX; testt = "max"; break;
-//                case GL_MAX: test = NO_BLEND; testt = "no blend"; break;
-//                default: test = GL_FUNC_ADD; testt = "add";
+//        if (currentTick % 50 == 49 && currentTick != testTick){
+//            switch (testFuncVal){
+//                case GL_FUNC_ADD: testFuncVal = GL_FUNC_SUBTRACT; testFuncName = "sub "; break;
+//                case GL_FUNC_SUBTRACT: testFuncVal = GL_FUNC_REVERSE_SUBTRACT; testFuncName = "subr"; break;
+//                case GL_FUNC_REVERSE_SUBTRACT: testFuncVal = GL_MIN; testFuncName = "min "; break;
+//                case GL_MIN: testFuncVal = GL_MAX; testFuncName = "max "; break;
+//                case GL_MAX: testFuncVal = NO_BLEND; testFuncName = "no b"; break;
+//                default: testFuncVal = GL_FUNC_ADD; testFuncName = "add ";
 //            }
 //        }
-//        System.out.println(testt);
-//        drawOverlay(test,10, 10, 200, 200, "textures/misc/forcefield.png");
+//
+//        testTick = currentTick;
+//
+//        if (currentTick % 600 >= 299){
+//            srcFactor = srcAlpha = GL_SRC_ALPHA;
+//            dstFactor = dstAlpha = GL_ONE_MINUS_SRC_ALPHA;
+//        } else
+//            srcFactor = dstFactor = srcAlpha = dstAlpha = GL_ONE;
+//
+//        setTexture("textures/misc/forcefield.png");
+//        setTextureBoxed(10, 10, 200, 200);
+//        blendEquation = testFuncVal;
+//        System.out.println(testFuncName);
+//        r = g = b = a = 1.0F;
+//        drawTexture();
     }
 }
