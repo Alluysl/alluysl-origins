@@ -1,5 +1,12 @@
 {
-	"type": "origins:simple",
+	"type": "alluyslorigins:overlay",
+	"r": 0.2,
+	"g": 0.1,
+	"b": 0.05,
+	"up_ticks": 10,
+	"style": "classic",
+	"start_scale": 2.0,
+	"scale": 1.0,
 	"condition": {
 		"type": "origins:resource",
 		"resource": "alluyslorigins:burrow_on",

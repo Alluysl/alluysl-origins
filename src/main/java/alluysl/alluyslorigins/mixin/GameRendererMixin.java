@@ -1,11 +1,12 @@
 package alluysl.alluyslorigins.mixin;
 
-import alluysl.alluyslorigins.power.AlluyslOriginsPowers;
+import alluysl.alluyslorigins.power.OverlayPower;
+import alluysl.alluyslorigins.util.OverlayInfo;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import io.github.apace100.origins.registry.ModComponents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Final;
@@ -15,12 +16,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL14.GL_FUNC_ADD;
-import static org.lwjgl.opengl.GL14.GL_FUNC_SUBTRACT;
-import static org.lwjgl.opengl.GL14.GL_FUNC_REVERSE_SUBTRACT;
-import static org.lwjgl.opengl.GL14.GL_MIN;
-import static org.lwjgl.opengl.GL14.GL_MAX;
 
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
@@ -35,6 +35,7 @@ public abstract class GameRendererMixin {
     private int srcFactor, dstFactor, srcAlpha, dstAlpha;
 
     private void resetTexture(){ texture = null; }
+    private void setTexture(Identifier id){ texture = id; }
     private void setTexture(String path){ texture = new Identifier(path); }
 
     @Shadow
@@ -67,7 +68,7 @@ public abstract class GameRendererMixin {
         bufferBuilder.vertex(vertices[0][0], vertices[0][1], -90.0D).texture(0.0F, 1.0F).next(); // bottom left
         bufferBuilder.vertex(vertices[1][0], vertices[1][1], -90.0D).texture(1.0F, 1.0F).next(); // bottom right
         bufferBuilder.vertex(vertices[2][0], vertices[2][1], -90.0D).texture(1.0F, 0.0F).next(); // top right
-        bufferBuilder.vertex(vertices[3][1], vertices[3][1], -90.0D).texture(0.0F, 0.0F).next(); // top left
+        bufferBuilder.vertex(vertices[3][0], vertices[3][1], -90.0D).texture(0.0F, 0.0F).next(); // top left
         tessellator.draw();
 
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -100,26 +101,25 @@ public abstract class GameRendererMixin {
         setTextureBoxed(left, top, width, height);
     }
 
-    private void drawDefaultOverlay(float ratio, float r, float g, float b){
-        setTextureCentered(MathHelper.lerp(ratio, 2.0F, 1.0F));
+    private void drawClassicOverlay(float ratio, float r, float g, float b, Identifier texture, float startScale, float endScale){
+        setTextureCentered(MathHelper.lerp(ratio, startScale, endScale));
         this.r = ratio * r;
         this.g = ratio * g;
         this.b = ratio * b;
         a = 1.0F;
-        resetTexture();
+        setTexture(texture);
         blendEquation = defaultBlendEquation;
         srcFactor = dstFactor = srcAlpha = dstAlpha = GL_ONE;
         drawTexture();
     }
 
-    private int baseTick = 0;
+//    private int baseTick = 0;
     private int previousTick = 0;
+    private boolean firstPass = true;
 
-    public boolean bypassNauseaCheck = true;
+    private final Map<Integer, OverlayInfo> overlayInfoMap = new ConcurrentHashMap<>();
 
     @Shadow private int ticks;
-
-    // Heavily based on Origin's game renderer phantomzied overlay mixin
 
     @Shadow
     @Final
@@ -132,33 +132,86 @@ public abstract class GameRendererMixin {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"))
     private void drawBurrowOverlay(CallbackInfo ci) {
         int currentTick = ticks;
-        int duration = 10;
+//        int duration = 10;
 
         if (this.client.player == null)
             return;
+        
+        for (OverlayPower power : ModComponents.ORIGIN.get(this.client.player).getPowers(OverlayPower.class, true)){
+            int id = power.getId();
+            boolean active = power.isActive();
+            OverlayInfo info = null;
+            if (overlayInfoMap.containsKey(id))
+                info = overlayInfoMap.get(id);
+            else if (active)
+                info = overlayInfoMap.put(id, new OverlayInfo(firstPass));
 
-        if (baseTick == 0){ // first time
-            if (AlluyslOriginsPowers.BURROW_OVERLAY.isActive(this.client.player))
-                baseTick = currentTick - duration;
-            else
-                baseTick = currentTick;
+            if (info != null){
+
+                if (currentTick != previousTick){
+
+                    info.ratio = MathHelper.clamp(
+                            active ? (power.upTicks == 0 ? 1.0F : info.ratio + 1.0F / power.upTicks)
+                                    : (power.downTicks == 0 ? 0.0F : info.ratio - 1.0F / power.downTicks),
+                            0.0F, 1.0F
+                        );
+                }
+
+                if (info.ratio > 0.0F)
+                    drawClassicOverlay(info.ratio, power.r, power.g, power.b, power.texture, power.startScale, power.endScale);
+            }
+
+//            if (ratio > 0.0F)
+//                drawDefaultOverlay(ratio, power.r, power.g, power.b);
         }
 
-        if(bypassNauseaCheck || !this.client.player.hasStatusEffect(StatusEffects.NAUSEA)) {
+//        for (OverlayInfo info : overlayInfo){
+//            boolean isActive = info.power.isActive();
+//
+//            if (isActive){
+//                if (!info.wasActive) // reverse slope, apply reverse progress
+//                    info.baseTick = info.power.downTicks == 0 ? currentTick :
+//                            currentTick - info.power.upTicks + MathHelper.clamp(
+//                                    info.power.upTicks * (currentTick - info.baseTick) / info.power.downTicks,
+//                                    0, info.power.upTicks);
+//            } else {
+//                if (info.wasActive) // reverse, apply reverse progress
+//                    info.baseTick = info.power.upTicks == 0 ? currentTick :
+//                            currentTick - info.power.downTicks + MathHelper.clamp(
+//                                    info.power.downTicks * (currentTick - info.baseTick) / info.power.upTicks,
+//                                    0, info.power.downTicks);
+//                if (currentTick >= info.baseTick + info.power.downTicks) // power expired
+//                    overlayInfo.remove(info);
+//            }
+//
+//            if (isActive)
+//                drawDefaultOverlay(MathHelper.clamp((currentTick - info.baseTick) / info.power.upTicks, 0.0F, 1.0F), info.power.r, info.power.g, info.power.b);
+//
+//            info.wasActive = isActive;
+//        }
 
-            if (AlluyslOriginsPowers.BURROW_OVERLAY.isActive(this.client.player)){
-                if (currentTick > baseTick + duration)
-                    baseTick = currentTick - duration; // avoid going over maximum activation
-            } else
-                baseTick += 2 * (currentTick - previousTick); // catch up with the current tick to deactivate
-
-            if (currentTick > baseTick)
-                drawDefaultOverlay(MathHelper.sqrt((float)(currentTick - baseTick) / duration), 0.2F, 0.1F, 0.05F);
-            else
-                baseTick = currentTick; // avoid going under minimum activation
-
-        } else
-            baseTick = currentTick;
+//        if (baseTick == 0){ // first time
+//            if (AlluyslOriginsPowers.BURROW_OVERLAY.isActive(this.client.player))
+//                baseTick = currentTick - duration;
+//            else
+//                baseTick = currentTick;
+//        }
+//
+//        if(bypassNauseaCheck || !this.client.player.hasStatusEffect(StatusEffects.NAUSEA)) {
+//
+//            if (AlluyslOriginsPowers.BURROW_OVERLAY.isActive(this.client.player)){
+//                if (currentTick > baseTick + duration)
+//                    baseTick = currentTick - duration; // avoid going over maximum activation
+//            } else
+//                baseTick += 2 * (currentTick - previousTick); // catch up with the current tick to deactivate
+//
+//            if (currentTick > baseTick)
+//                drawDefaultOverlay(MathHelper.sqrt((float)(currentTick - baseTick) / duration), 0.2F, 0.1F, 0.05F);
+//            else
+//                baseTick = currentTick; // avoid going under minimum activation
+//
+//        } else
+//            baseTick = currentTick;
 
         previousTick = currentTick;
 
@@ -187,5 +240,7 @@ public abstract class GameRendererMixin {
 //        System.out.println(testFuncName);
 //        r = g = b = a = 1.0F;
 //        drawTexture();
+
+        firstPass = false;
     }
 }

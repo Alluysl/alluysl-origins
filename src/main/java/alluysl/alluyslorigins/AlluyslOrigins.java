@@ -15,6 +15,6 @@ public class AlluyslOrigins implements ModInitializer {
 
 		System.out.println("[Alluysl's Origins] Mod initialized.");
 
-		AlluyslOriginsPowers.init();
+		AlluyslOriginsPowers.register();
 	}
 }
