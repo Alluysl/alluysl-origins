@@ -113,7 +113,6 @@ public abstract class GameRendererMixin {
         drawTexture();
     }
 
-//    private int baseTick = 0;
     private int previousTick = 0;
     private boolean firstPass = true;
 
@@ -125,14 +124,10 @@ public abstract class GameRendererMixin {
     @Final
     private MinecraftClient client;
 
-//    private int testFuncVal = GL_FUNC_ADD;
-//    private String testFuncName = "add";
-//    private int testTick = 0;
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"))
     private void drawBurrowOverlay(CallbackInfo ci) {
         int currentTick = ticks;
-//        int duration = 10;
 
         if (this.client.player == null)
             return;
@@ -161,86 +156,7 @@ public abstract class GameRendererMixin {
                     drawClassicOverlay(info.ratio, power.r, power.g, power.b, power.texture, power.startScale, power.endScale);
             }
 
-//            if (ratio > 0.0F)
-//                drawDefaultOverlay(ratio, power.r, power.g, power.b);
-        }
-
-//        for (OverlayInfo info : overlayInfo){
-//            boolean isActive = info.power.isActive();
-//
-//            if (isActive){
-//                if (!info.wasActive) // reverse slope, apply reverse progress
-//                    info.baseTick = info.power.downTicks == 0 ? currentTick :
-//                            currentTick - info.power.upTicks + MathHelper.clamp(
-//                                    info.power.upTicks * (currentTick - info.baseTick) / info.power.downTicks,
-//                                    0, info.power.upTicks);
-//            } else {
-//                if (info.wasActive) // reverse, apply reverse progress
-//                    info.baseTick = info.power.upTicks == 0 ? currentTick :
-//                            currentTick - info.power.downTicks + MathHelper.clamp(
-//                                    info.power.downTicks * (currentTick - info.baseTick) / info.power.upTicks,
-//                                    0, info.power.downTicks);
-//                if (currentTick >= info.baseTick + info.power.downTicks) // power expired
-//                    overlayInfo.remove(info);
-//            }
-//
-//            if (isActive)
-//                drawDefaultOverlay(MathHelper.clamp((currentTick - info.baseTick) / info.power.upTicks, 0.0F, 1.0F), info.power.r, info.power.g, info.power.b);
-//
-//            info.wasActive = isActive;
-//        }
-
-//        if (baseTick == 0){ // first time
-//            if (AlluyslOriginsPowers.BURROW_OVERLAY.isActive(this.client.player))
-//                baseTick = currentTick - duration;
-//            else
-//                baseTick = currentTick;
-//        }
-//
-//        if(bypassNauseaCheck || !this.client.player.hasStatusEffect(StatusEffects.NAUSEA)) {
-//
-//            if (AlluyslOriginsPowers.BURROW_OVERLAY.isActive(this.client.player)){
-//                if (currentTick > baseTick + duration)
-//                    baseTick = currentTick - duration; // avoid going over maximum activation
-//            } else
-//                baseTick += 2 * (currentTick - previousTick); // catch up with the current tick to deactivate
-//
-//            if (currentTick > baseTick)
-//                drawDefaultOverlay(MathHelper.sqrt((float)(currentTick - baseTick) / duration), 0.2F, 0.1F, 0.05F);
-//            else
-//                baseTick = currentTick; // avoid going under minimum activation
-//
-//        } else
-//            baseTick = currentTick;
-
         previousTick = currentTick;
-
-//        if (currentTick % 50 == 49 && currentTick != testTick){
-//            switch (testFuncVal){
-//                case GL_FUNC_ADD: testFuncVal = GL_FUNC_SUBTRACT; testFuncName = "sub "; break;
-//                case GL_FUNC_SUBTRACT: testFuncVal = GL_FUNC_REVERSE_SUBTRACT; testFuncName = "subr"; break;
-//                case GL_FUNC_REVERSE_SUBTRACT: testFuncVal = GL_MIN; testFuncName = "min "; break;
-//                case GL_MIN: testFuncVal = GL_MAX; testFuncName = "max "; break;
-//                case GL_MAX: testFuncVal = NO_BLEND; testFuncName = "no b"; break;
-//                default: testFuncVal = GL_FUNC_ADD; testFuncName = "add ";
-//            }
-//        }
-//
-//        testTick = currentTick;
-//
-//        if (currentTick % 600 >= 299){
-//            srcFactor = srcAlpha = GL_SRC_ALPHA;
-//            dstFactor = dstAlpha = GL_ONE_MINUS_SRC_ALPHA;
-//        } else
-//            srcFactor = dstFactor = srcAlpha = dstAlpha = GL_ONE;
-//
-//        setTexture("textures/misc/forcefield.png");
-//        setTextureBoxed(10, 10, 200, 200);
-//        blendEquation = testFuncVal;
-//        System.out.println(testFuncName);
-//        r = g = b = a = 1.0F;
-//        drawTexture();
-
         firstPass = false;
     }
 }
