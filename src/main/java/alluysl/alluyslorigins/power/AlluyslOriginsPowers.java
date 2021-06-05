@@ -57,6 +57,10 @@ public class AlluyslOriginsPowers {
 //        POWER_FACTORIES.keySet().forEach(powerType -> Registry.register(ModRegistries.POWER_FACTORY, POWER_FACTORIES.get(powerType), powerType));
 //    }
 
+    private static boolean isClassicAlphaAlias(String name){
+        return name.equals("classic_alpha") || name.equals("classic_transparent") || name.equals("classic_transparency");
+    }
+
     public static void register(){
 
         register(new PowerFactory<>(
@@ -79,7 +83,7 @@ public class AlluyslOriginsPowers {
                         .add("source_alpha_factor", SerializableDataType.STRING, "")
                         .add("destination_alpha_factor", SerializableDataType.STRING, "")
                         .addFunctionedDefault("ratio_drives_color", SerializableDataType.BOOLEAN, data -> data.getString("style").equals("classic"))
-                        .addFunctionedDefault("ratio_drives_alpha", SerializableDataType.BOOLEAN, data -> data.getString("style").equals("classic_alpha")),
+                        .addFunctionedDefault("ratio_drives_alpha", SerializableDataType.BOOLEAN, data -> isClassicAlphaAlias(data.getString("style"))),
                 data -> (type, player) -> new OverlayPower(
                             type, player,
                             data.hashCode(), // thankfully, the hash is consistent, and powers with identical JSON files even get a different hash!
@@ -90,7 +94,8 @@ public class AlluyslOriginsPowers {
                             data.getInt("up_ticks"),
                             data.getInt("down_ticks"),
                             data.getId("texture"),
-                            data.getString("style"),
+                            isClassicAlphaAlias(data.getString("style")) ?
+                                    "classic_alpha" : data.getString("style"),
                             data.getFloat("start_scale"),
                             data.getFloat("scale"),
                             data.getString("blend_equation").equals("") ?
