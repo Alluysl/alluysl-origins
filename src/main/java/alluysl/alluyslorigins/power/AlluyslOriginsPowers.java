@@ -71,7 +71,15 @@ public class AlluyslOriginsPowers {
                         .add("texture", SerializableDataType.IDENTIFIER, new Identifier("textures/misc/nausea.png"))
                         .add("style", SerializableDataType.STRING, "classic")
                         .add("scale", SerializableDataType.FLOAT, 1.0F)
-                        .addFunctionedDefault("start_scale", SerializableDataType.FLOAT, data -> data.getFloat("scale")),
+                        .addFunctionedDefault("start_scale", SerializableDataType.FLOAT, data -> data.getFloat("scale"))
+                        .add("blend_equation", SerializableDataType.STRING, "")
+                        .add("blend_mode", SerializableDataType.STRING, "")
+                        .add("source_factor", SerializableDataType.STRING, "")
+                        .add("destination_factor", SerializableDataType.STRING, "")
+                        .add("source_alpha_factor", SerializableDataType.STRING, "")
+                        .add("destination_alpha_factor", SerializableDataType.STRING, "")
+                        .addFunctionedDefault("ratio_drives_color", SerializableDataType.BOOLEAN, data -> data.getString("style").equals("classic"))
+                        .addFunctionedDefault("ratio_drives_alpha", SerializableDataType.BOOLEAN, data -> data.getString("style").equals("classic_alpha")),
                 data -> (type, player) -> new OverlayPower(
                             type, player,
                             data.hashCode(), // thankfully, the hash is consistent, and powers with identical JSON files even get a different hash!
@@ -84,7 +92,15 @@ public class AlluyslOriginsPowers {
                             data.getId("texture"),
                             data.getString("style"),
                             data.getFloat("start_scale"),
-                            data.getFloat("scale"))
+                            data.getFloat("scale"),
+                            data.getString("blend_equation").equals("") ?
+                                    data.getString("blend_mode") : data.getString("blend_equation"),
+                            data.getString("source_factor"),
+                            data.getString("destination_factor"),
+                            data.getString("source_alpha_factor"),
+                            data.getString("destination_alpha_factor"),
+                            data.getBoolean("ratio_drives_color"),
+                            data.getBoolean("ratio_drives_alpha"))
         ).allowCondition());
 
         System.out.println("[Alluysl's Origins] Powers registered.");

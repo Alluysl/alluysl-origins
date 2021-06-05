@@ -4,9 +4,11 @@
 	"g": 0.1,
 	"b": 0.05,
 	"up_ticks": 10,
-	"style": "classic",
+	"down_ticks": 10,
 	"start_scale": 2.0,
-	"end_scale": 1.0,
+	"scale": 1.0,
+	"ratio_drives_color": true,
+	"ratio_drives_alpha": false,
 	"condition": {
 		"type": "origins:resource",
 		"resource": "alluyslorigins:burrow_on",

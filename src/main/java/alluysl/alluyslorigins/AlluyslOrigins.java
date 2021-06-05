@@ -6,6 +6,7 @@ import alluysl.alluyslorigins.power.AlluyslOriginsPowers;
 public class AlluyslOrigins implements ModInitializer {
 
 	public static final String MODID = "alluyslorigins";
+	public static final int NO_BLEND = 0; // the value shall not conflict with any of the OpenGL blend mode macros
 
 	@Override
 	public void onInitialize() {

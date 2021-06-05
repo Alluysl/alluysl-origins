@@ -1,5 +1,6 @@
 package alluysl.alluyslorigins.mixin;
 
+import alluysl.alluyslorigins.AlluyslOrigins;
 import alluysl.alluyslorigins.power.OverlayPower;
 import alluysl.alluyslorigins.util.OverlayInfo;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -25,14 +26,13 @@ import static org.lwjgl.opengl.GL14.GL_FUNC_ADD;
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
 
-    private final int NO_BLEND = 0;
     private final int defaultBlendEquation = GL_FUNC_ADD;
 
     private float r = 0, g = 0, b = 0, a = 1.0F;
     private final double[][] vertices = new double[4][2];
     private Identifier texture = null;
     private int blendEquation = defaultBlendEquation;
-    private int srcFactor, dstFactor, srcAlpha, dstAlpha;
+    private int srcFactor = GL_ONE, dstFactor = GL_ONE, srcAlpha = GL_ONE, dstAlpha = GL_ONE;
 
     private void resetTexture(){ texture = null; }
     private void setTexture(Identifier id){ texture = id; }
@@ -52,7 +52,7 @@ public abstract class GameRendererMixin {
     private void drawTexture(){ // edited method_31136 (second part)
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
-        if (blendEquation != NO_BLEND){
+        if (blendEquation != AlluyslOrigins.NO_BLEND){
             RenderSystem.enableBlend();
             if (blendEquation != GL_FUNC_ADD) // default
                 RenderSystem.blendEquation(blendEquation);
@@ -72,7 +72,7 @@ public abstract class GameRendererMixin {
         tessellator.draw();
 
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        if (blendEquation != NO_BLEND){
+        if (blendEquation != AlluyslOrigins.NO_BLEND){
             RenderSystem.defaultBlendFunc();
             if (blendEquation != GL_FUNC_ADD)
                 RenderSystem.blendEquation(GL_FUNC_ADD);
@@ -103,13 +103,15 @@ public abstract class GameRendererMixin {
 
     private void drawOverlay(OverlayPower power, float ratio){
         setTextureCentered(MathHelper.lerp(ratio, power.startScale, power.endScale));
-        r = ratio * power.r;
-        g = ratio * power.g;
-        b = ratio * power.b;
-        a = 1.0F;
+        float colorRatio = power.ratioDrivesColor ? ratio : 1;
+        r = colorRatio * power.r;
+        g = colorRatio * power.g;
+        b = colorRatio * power.b;
+        a = (power.ratioDrivesAlpha ? ratio : 1) * power.a;
         setTexture(power.texture);
-        blendEquation = defaultBlendEquation;
-        srcFactor = dstFactor = srcAlpha = dstAlpha = GL_ONE;
+        blendEquation = power.blendEquation;
+        srcFactor = power.srcFactor; dstFactor = power.dstFactor;
+        srcAlpha = power.srcAlpha; dstAlpha = power.dstAlpha;
         drawTexture();
     }
 
