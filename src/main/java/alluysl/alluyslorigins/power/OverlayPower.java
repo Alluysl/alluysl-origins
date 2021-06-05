@@ -3,8 +3,6 @@ package alluysl.alluyslorigins.power;
 import io.github.apace100.origins.power.Power;
 import io.github.apace100.origins.power.PowerType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.FloatTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
@@ -37,5 +35,10 @@ public class OverlayPower extends Power {
 
     public int getId(){
         return id;
+    }
+
+    @Override
+    public String toString(){
+        return super.toString() + " | id " + id + " | rgba " + r + " " + g + " " + b + " " + a + " | ticks " + upTicks + " up " + downTicks + " down | " + texture + " | " + style + " | " + startScale + " -> " + endScale;
     }
 }

@@ -6,7 +6,7 @@
 	"up_ticks": 10,
 	"style": "classic",
 	"start_scale": 2.0,
-	"scale": 1.0,
+	"end_scale": 1.0,
 	"condition": {
 		"type": "origins:resource",
 		"resource": "alluyslorigins:burrow_on",

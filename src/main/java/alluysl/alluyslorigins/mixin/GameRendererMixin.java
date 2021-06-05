@@ -101,13 +101,13 @@ public abstract class GameRendererMixin {
         setTextureBoxed(left, top, width, height);
     }
 
-    private void drawClassicOverlay(float ratio, float r, float g, float b, Identifier texture, float startScale, float endScale){
-        setTextureCentered(MathHelper.lerp(ratio, startScale, endScale));
-        this.r = ratio * r;
-        this.g = ratio * g;
-        this.b = ratio * b;
+    private void drawOverlay(OverlayPower power, float ratio){
+        setTextureCentered(MathHelper.lerp(ratio, power.startScale, power.endScale));
+        r = ratio * power.r;
+        g = ratio * power.g;
+        b = ratio * power.b;
         a = 1.0F;
-        setTexture(texture);
+        setTexture(power.texture);
         blendEquation = defaultBlendEquation;
         srcFactor = dstFactor = srcAlpha = dstAlpha = GL_ONE;
         drawTexture();
@@ -132,7 +132,7 @@ public abstract class GameRendererMixin {
         if (this.client.player == null)
             return;
         
-        for (OverlayPower power : ModComponents.ORIGIN.get(this.client.player).getPowers(OverlayPower.class, true)){
+        for (OverlayPower power : ModComponents.ORIGIN.get(this.client.player).getPowers(OverlayPower.class, true)) {
             int id = power.getId();
             boolean active = power.isActive();
             OverlayInfo info = null;
@@ -141,20 +141,22 @@ public abstract class GameRendererMixin {
             else if (active)
                 info = overlayInfoMap.put(id, new OverlayInfo(firstPass));
 
-            if (info != null){
+            if (info != null) {
 
-                if (currentTick != previousTick){
+                if (currentTick != previousTick) {
 
                     info.ratio = MathHelper.clamp(
                             active ? (power.upTicks == 0 ? 1.0F : info.ratio + 1.0F / power.upTicks)
                                     : (power.downTicks == 0 ? 0.0F : info.ratio - 1.0F / power.downTicks),
                             0.0F, 1.0F
-                        );
+                    );
                 }
 
                 if (info.ratio > 0.0F)
-                    drawClassicOverlay(info.ratio, power.r, power.g, power.b, power.texture, power.startScale, power.endScale);
+                    drawOverlay(power, info.ratio);
             }
+
+        }
 
         previousTick = currentTick;
         firstPass = false;

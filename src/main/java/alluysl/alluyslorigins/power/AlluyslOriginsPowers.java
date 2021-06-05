@@ -85,7 +85,6 @@ public class AlluyslOriginsPowers {
                             data.getString("style"),
                             data.getFloat("start_scale"),
                             data.getFloat("scale"))
-
         ).allowCondition());
 
         System.out.println("[Alluysl's Origins] Powers registered.");
