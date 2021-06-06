@@ -1,10 +1,16 @@
 # Alluysl's Origins
 
-A mod that adds two origins for now, and should add more in the future.
+A Fabric-only mod that adds two origins for now, and should add more in the future.
 
 <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api"><img src="https://i.imgur.com/HabVZJR.png" alt="Requires Fabric API" width="180" height="60" /></a>
-<a href="https://www.curseforge.com/minecraft/mc-mods/origins"><img src="https://media.discordapp.net/attachments/817078792463187988/831319512464490496/origins_badge.png" alt="Requires Origins" width="180" height="60" /></a>
+<a href="https://github.com/Alluysl/origins-fabric/releases/tag/0.7.3%2Bfix"><img src="https://media.discordapp.net/attachments/817078792463187988/831319512464490496/origins_badge.png" alt="Requires Origins" width="180" height="60" /></a>
 <a href="https://www.curseforge.com/minecraft/mc-mods/pehkui"><img src="https://cdn.discordapp.com/attachments/747200097015562250/840039825678663741/pehkui_badge.png" alt="Requires Pehkui" width="180" height="60" /></a>
+
+## Installing
+
+To get the mod, check its [releases](https://github.com/Alluysl/alluysl-origins/releases), download the JAR file of your version of choice and put it in your mods folder.
+
+Make sure you have [this version of Origins](https://github.com/Alluysl/origins-fabric/releases/tag/0.7.3%2Bfix) if you use a 1.2 version of my mod or over, and version [0.7.2](https://www.curseforge.com/minecraft/mc-mods/origins/files/3318365) or [0.7.3](https://www.curseforge.com/minecraft/mc-mods/origins/files/3319081) otherwise (lower versions may work but I can't guarantee they will). You will need the Fabric API and Pehkui as well.
 
 ## Origins
 
