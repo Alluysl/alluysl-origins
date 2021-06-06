@@ -63,7 +63,7 @@ You can only eat meat, as actual moles feed from worms.
 
 ## Special thanks
 
-I'd like to thank Apace (apace100), MoryiaShiine, and UltrusBot for opening the source to Origins and Origins Classes, Extra Origins, and Mob Origins respectively, which allowed me to understand how adding power types works
+I'd like to thank Apace (apace100), MoryiaShiine, and UltrusBot for opening the source to Origins and Origins Classes, Extra Origins, and Mob Origins respectively, which allowed me to understand how adding power types works.
 
 Thanks a lot again to Apace for making Origins in the first place, for his help with issues I encountered, and for finding out what method draws the nausea overlay.
 
