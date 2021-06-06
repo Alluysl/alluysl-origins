@@ -114,6 +114,25 @@
 		}
 	},
 
+	"overlay": {
+		"type": "alluyslorigins:overlay",
+		"r": 0.2,
+		"g": 0.1,
+		"b": 0.05,
+		"up_ticks": 10,
+		"down_ticks": 10,
+		"start_scale": 2.0,
+		"scale": 1.0,
+		"ratio_drives_color": true,
+		"ratio_drives_alpha": false,
+		"condition": {
+			"type": "origins:resource",
+			"resource": "alluyslorigins:burrow_on",
+			"comparison": "==",
+			"compare_to": 1
+		}
+	},
+
 	"non_dirt_mining_speed_bonus": {
 		"type": "origins:modify_break_speed",
 		"condition": {
