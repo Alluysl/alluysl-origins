@@ -12,6 +12,8 @@ To get the mod, check its [releases](https://github.com/Alluysl/alluysl-origins/
 
 Make sure you have [this version of Origins](https://github.com/Alluysl/origins-fabric/releases/tag/0.7.3%2Bfix) if you use a 1.2 version of my mod or over, and version [0.7.2](https://www.curseforge.com/minecraft/mc-mods/origins/files/3318365) or [0.7.3](https://www.curseforge.com/minecraft/mc-mods/origins/files/3319081) otherwise (lower versions may work but I can't guarantee they will). You will need the Fabric API and Pehkui as well.
 
+**║** I will **not** make a Forge port. If you're willing to do so yourself, feel free to make your own fork as long as you give proper credit. **║**
+
 ## Origins
 
 Don't hesitate to give feedback about powers or balancing!
