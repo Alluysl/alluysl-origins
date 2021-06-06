@@ -1,7 +1,7 @@
 {
 	"type": "origins:multiple",
 	"name": "Sand Burrow",
-	"description": "You dig through sand much faster than others, and through dirt to a lesser extent.",
+	"description": "You dig through sand much faster than others, and through other soft blocks as well, though to a lesser extent.",
 
 	"sand": {
 		"type": "origins:modify_break_speed",
@@ -11,19 +11,19 @@
 		},
 		"modifier": {
 			"name": "Sand Burrow sand break speed bonus",
-			"value": 0.18,
+			"value": 0.10,
 			"operation": "addition"
 		}
 	},
 
-	"dirt": {
+	"soft": {
 		"type": "origins:modify_break_speed",
 		"block_condition": {
 			"type": "origins:in_tag",
-			"tag": "c:dirt"
+			"tag": "minecraft:enderman_holdable"
 		},
 		"modifier": {
-			"name": "Sand Burrow dirt break speed bonus",
+			"name": "Sand Burrow soft block break speed bonus",
 			"value": 0.08,
 			"operation": "addition"
 		}
