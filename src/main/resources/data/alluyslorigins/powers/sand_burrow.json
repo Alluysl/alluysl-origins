@@ -6,8 +6,17 @@
 	"sand": {
 		"type": "origins:modify_break_speed",
 		"block_condition": {
-			"type": "origins:in_tag",
-			"tag": "minecraft:sand"
+			"type": "origins:or",
+			"conditions": [
+				{
+					"type": "origins:in_tag",
+					"tag": "minecraft:sand"
+				},
+				{
+					"type": "origins:in_tag",
+					"tag": "c:sand"
+				}
+			]
 		},
 		"modifier": {
 			"name": "Sand Burrow sand break speed bonus",
@@ -19,8 +28,48 @@
 	"soft": {
 		"type": "origins:modify_break_speed",
 		"block_condition": {
-			"type": "origins:in_tag",
-			"tag": "minecraft:enderman_holdable"
+			"type": "origins:and",
+			"conditions": [
+				{
+					"type": "origins:or",
+					"conditions": [
+						{
+							"type": "origins:in_tag",
+							"tag": "minecraft:enderman_holdable"
+						},
+						{
+							"type": "origins:in_tag",
+							"tag": "c:dirt"
+						},
+						{
+							"type": "origins:in_tag",
+							"tag": "c:sand"
+						},
+						{
+							"type": "origins:in_tag",
+							"tag": "c:gravel"
+						}
+					]
+				},
+				{
+					"type": "origins:or",
+					"conditions": [
+						{
+							"type": "origins:block",
+							"block": "minecraft:pumpkin"
+						},
+						{
+							"type": "origins:block",
+							"block": "minecraft:carved_pumpkin"
+						},
+						{
+							"type": "origins:block",
+							"block": "minecraft:melon"
+						}
+					],
+					"inverted": true
+				}
+			]
 		},
 		"modifier": {
 			"name": "Sand Burrow soft block break speed bonus",
