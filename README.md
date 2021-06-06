@@ -59,3 +59,16 @@ You have permanent night vision but strong brightness hurts your eyes, making yo
 #### Carnivore
 
 You can only eat meat, as actual moles feed from worms.
+
+
+## Special thanks
+
+I'd like to thank Apace (apace100), MoryiaShiine, and UltrusBot for opening the source to Origins and Origins Classes, Extra Origins, and Mob Origins respectively, which allowed me to understand how adding power types works
+
+Thanks a lot again to Apace for making Origins in the first place, for his help with issues I encountered, and for finding out what method draws the nausea overlay.
+
+Thanks too to a few of my friends including DrCrowller that gave feedback on the origins.
+
+Thanks also to the few people in the Origins Discord server that helped me start out with Origins datapacking.
+
+Finally, thanks to [the Origins documentation contributors](https://github.com/apace100/origins-docs/graphs/contributors) for their incredibly useful work.
