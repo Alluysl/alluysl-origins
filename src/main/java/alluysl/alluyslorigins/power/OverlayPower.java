@@ -65,7 +65,7 @@ public class OverlayPower extends Power {
             case "min": case "minimum": return "min";
             case "max": case "maximum": return "max";
             case "avg": case "average": case "median": return "avg";
-            case "fixed": case "constant": case "texture": return "fixed";
+            case "fixed": case "absolute": case "constant": case "texture": return "fixed";
             case "stretch": case "stretched": return "stretch";
             default:
                 System.out.println("[Alluysl's Origins] Warning: unrecognized scaling mode '" + name + "', defaulting to 'stretch'.");

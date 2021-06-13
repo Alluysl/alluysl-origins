@@ -124,7 +124,7 @@ public abstract class GameRendererMixin {
                 width = clientHeight;
                 break;
             case "min":
-                if (clientWidth * textureHeight >= clientHeight * textureWidth)
+                if (clientWidth * textureHeight > clientHeight * textureWidth)
                     width = textureWidth * clientHeight / (double)textureHeight;
                 else
                     width = clientWidth;
@@ -150,7 +150,7 @@ public abstract class GameRendererMixin {
                 height = clientWidth;
                 break;
             case "min":
-                if (clientHeight * textureWidth >= clientWidth * textureHeight)
+                if (clientHeight * textureWidth > clientWidth * textureHeight)
                     height = textureHeight * clientWidth / (double)textureWidth;
                 else
                     height = clientHeight;
