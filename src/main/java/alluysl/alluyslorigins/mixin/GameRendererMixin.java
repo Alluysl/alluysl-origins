@@ -205,7 +205,7 @@ public abstract class GameRendererMixin {
 
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"))
-    private void drawBurrowOverlay(CallbackInfo ci) {
+    private void drawOverlays(CallbackInfo ci) {
         int currentTick = ticks;
 
         if (this.client.player == null)
