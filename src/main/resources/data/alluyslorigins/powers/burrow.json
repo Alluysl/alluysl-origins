@@ -77,6 +77,21 @@
 					"permission_level": 4
 				}
 			]
+		},
+		"entity_action_respawned": {
+			"type": "origins:and",
+			"actions": [
+				{
+					"type": "origins:execute_command",
+					"command": "scale set pehkui:height 1 @s",
+					"permission_level": 4
+				},
+				{
+					"type": "origins:execute_command",
+					"command": "resource set @s alluyslorigins:burrow_on 0",
+					"permission_level": 4
+				}
+			]
 		}
 	},
 
