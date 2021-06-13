@@ -31,12 +31,26 @@ public abstract class GameRendererMixin {
     private float r = 0, g = 0, b = 0, a = 1.0F;
     private final double[][] vertices = new double[4][2];
     private Identifier texture = null;
+    int textureId = -1;
     private int blendEquation = defaultBlendEquation;
     private int srcFactor = GL_ONE, dstFactor = GL_ONE, srcAlpha = GL_ONE, dstAlpha = GL_ONE;
 
-    private void resetTexture(){ texture = null; }
-    private void setTexture(Identifier id){ texture = id; }
-    private void setTexture(String path){ texture = new Identifier(path); }
+    private void resetTexture(){
+        texture = null;
+        textureId = -1;
+    }
+    private void setTexture(Identifier id){
+        texture = id;
+        if (this.client.getTextureManager().getTexture(id) == null){
+            textureId = -1;
+            System.out.println("[Alluysl's Origins] Warning: couldn't get texture OpenGL id.");
+        } else {
+            textureId = this.client.getTextureManager().getTexture(id).getGlId();
+        }
+    }
+    private void setTexture(String path){
+        setTexture(new Identifier(path));
+    }
 
     @Shadow
     @Final
@@ -91,18 +105,81 @@ public abstract class GameRendererMixin {
     }
 
     // Sets the texture as a rectangle of screen/window dimensions centered on the middle of it (Mojang + Yarn)
-    private void setTextureCentered(double scale) {
+    private void setTextureCentered(double scale, String scalingX, String scalingY, int baseWidth, int baseHeight) {
         int clientWidth = this.client.getWindow().getScaledWidth();
         int clientHeight = this.client.getWindow().getScaledHeight();
-        double width = (double)clientWidth * scale;
-        double height = (double)clientHeight * scale;
-        double left = ((double)clientWidth - width) / 2.0D;
-        double top = ((double)clientHeight - height) / 2.0D;
+        int textureWidth = baseWidth != 0 ? baseWidth : clientWidth;
+        int textureHeight = baseHeight != 0 ? baseHeight : clientHeight;
+        double left, top, width, height;
+
+        if (textureId != -1){
+            if (baseWidth != 0);
+            if (baseHeight != 0);
+            // TODO get texture dimensions
+        }
+
+        switch (scalingX){
+            case "y":
+                //noinspection SuspiciousNameCombination
+                width = clientHeight;
+                break;
+            case "min":
+                if (clientWidth * textureHeight >= clientHeight * textureWidth)
+                    width = textureWidth * clientHeight / (double)textureHeight;
+                else
+                    width = clientWidth;
+                break;
+            case "max":
+                if (clientWidth * textureHeight >= clientHeight * textureWidth)
+                    width = clientWidth;
+                else
+                    width = textureWidth * clientHeight / (double)textureHeight;
+                break;
+            case "avg":
+                width = (clientWidth + textureWidth * clientHeight / (double)textureHeight) / 2;
+                break;
+            case "fixed":
+                width = textureWidth;
+                break;
+            default: // stretch (scale 1 is full width)
+                width = clientWidth;
+        }
+        switch (scalingY){
+            case "x":
+                //noinspection SuspiciousNameCombination
+                height = clientWidth;
+                break;
+            case "min":
+                if (clientHeight * textureWidth >= clientWidth * textureHeight)
+                    height = textureHeight * clientWidth / (double)textureWidth;
+                else
+                    height = clientHeight;
+                break;
+            case "max":
+                if (clientHeight * textureWidth >= clientWidth * textureHeight)
+                    height = clientHeight;
+                else
+                    height = textureHeight * clientWidth / (double)textureWidth;
+                break;
+            case "avg":
+                height = (clientHeight + textureHeight * clientWidth / (double)textureWidth) / 2;
+                break;
+            case "fixed":
+                height = textureHeight;
+                break;
+            default: // stretch (scale 1 is full height)
+                height = clientHeight;
+        }
+        width *= scale;
+        height *= scale;
+        left = ((double)clientWidth - width) / 2.0D;
+        top = ((double)clientHeight - height) / 2.0D;
         setTextureBoxed(left, top, width, height);
     }
 
     private void drawOverlay(OverlayPower power, float ratio){
-        setTextureCentered(MathHelper.lerp(ratio, power.startScale, power.endScale));
+        setTextureCentered(MathHelper.lerp(ratio, power.startScale, power.endScale),
+                power.scalingX, power.scalingY, power.baseWidth, power.baseHeight);
         float colorRatio = power.ratioDrivesColor ? ratio : 1;
         r = colorRatio * power.r;
         g = colorRatio * power.g;

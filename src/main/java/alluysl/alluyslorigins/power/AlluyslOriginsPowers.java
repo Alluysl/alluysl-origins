@@ -1,9 +1,6 @@
 package alluysl.alluyslorigins.power;
 
 import alluysl.alluyslorigins.AlluyslOrigins;
-import io.github.apace100.origins.power.Power;
-import io.github.apace100.origins.power.PowerType;
-import io.github.apace100.origins.power.PowerTypeReference;
 import io.github.apace100.origins.power.factory.PowerFactory;
 import io.github.apace100.origins.registry.ModRegistries;
 import io.github.apace100.origins.util.SerializableData;
@@ -11,55 +8,7 @@ import io.github.apace100.origins.util.SerializableDataType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-// Credits to MoriyaShiine for the hash map trick that allows cleaner referencing setup
-
 public class AlluyslOriginsPowers {
-
-//    private static final Map<PowerFactory<?>, Identifier> POWER_FACTORIES = new LinkedHashMap<>();
-//
-//    public static final PowerFactory<Power> OVERLAY = create(new PowerFactory<>(
-//            new Identifier(AlluyslOrigins.MODID, "overlay"),
-//            new SerializableData()
-//                    .add("r", SerializableDataType.FLOAT, 1.0F)
-//                    .add("g", SerializableDataType.FLOAT, 1.0F)
-//                    .add("b", SerializableDataType.FLOAT, 1.0F)
-//                    .add("a", SerializableDataType.FLOAT, 1.0F)
-//                    .add("up_ticks", SerializableDataType.INT, 0)
-//                    .addFunctionedDefault("down_ticks", SerializableDataType.INT, data -> data.getInt("up_ticks"))
-//                    .add("style", SerializableDataType.STRING, "classic"),
-//            data -> (type, player) -> {
-//                System.out.println("lambda called");
-//                return new OverlayPower(
-//                        type, player,
-//                        data.getFloat("r"),
-//                        data.getFloat("g"),
-//                        data.getFloat("b"),
-//                        data.getFloat("a"),
-//                        data.getInt("up_ticks"),
-//                        data.getInt("down_ticks"),
-//                        data.getString("style"));
-//            }
-//
-//    ));
-
-    public static final PowerType<Power> BURROW_OVERLAY = new PowerTypeReference<>(new Identifier(AlluyslOrigins.MODID, "burrow_overlay"));
-
-//    private static <T extends Power> PowerFactory<T> create(PowerFactory<T> factory) {
-//        POWER_FACTORIES.put(factory, factory.getSerializerId());
-//        return factory;
-//    }
-//
-//    public static void init() {
-//        POWER_FACTORIES.keySet().forEach(powerType -> Registry.register(ModRegistries.POWER_FACTORY, POWER_FACTORIES.get(powerType), powerType));
-//    }
-
-    private static boolean isClassicAlphaAlias(String name){
-        return name.equals("classic_alpha") || name.equals("classic_transparent") || name.equals("classic_transparency");
-    }
 
     public static void register(){
 
@@ -73,7 +22,12 @@ public class AlluyslOriginsPowers {
                         .add("up_ticks", SerializableDataType.INT, 0)
                         .addFunctionedDefault("down_ticks", SerializableDataType.INT, data -> data.getInt("up_ticks"))
                         .add("texture", SerializableDataType.IDENTIFIER, new Identifier("textures/misc/nausea.png"))
-                        .add("style", SerializableDataType.STRING, "classic")
+                        .add("preset", SerializableDataType.STRING, "classic")
+                        .add("scaling", SerializableDataType.STRING, "stretch")
+                        .add("scaling_x", SerializableDataType.STRING, "")
+                        .add("scaling_y", SerializableDataType.STRING, "")
+                        .add("base_scale_x", SerializableDataType.INT, 0)
+                        .add("base_scale_y", SerializableDataType.INT, 0)
                         .add("scale", SerializableDataType.FLOAT, 1.0F)
                         .addFunctionedDefault("start_scale", SerializableDataType.FLOAT, data -> data.getFloat("scale"))
                         .add("blend_equation", SerializableDataType.STRING, "")
@@ -82,8 +36,8 @@ public class AlluyslOriginsPowers {
                         .add("destination_factor", SerializableDataType.STRING, "")
                         .add("source_alpha_factor", SerializableDataType.STRING, "")
                         .add("destination_alpha_factor", SerializableDataType.STRING, "")
-                        .addFunctionedDefault("ratio_drives_color", SerializableDataType.BOOLEAN, data -> data.getString("style").equals("classic"))
-                        .addFunctionedDefault("ratio_drives_alpha", SerializableDataType.BOOLEAN, data -> isClassicAlphaAlias(data.getString("style"))),
+                        .addFunctionedDefault("ratio_drives_color", SerializableDataType.BOOLEAN, data -> data.getString("preset").equals("classic") || data.getString("preset").equals("mask"))
+                        .addFunctionedDefault("ratio_drives_alpha", SerializableDataType.BOOLEAN, data -> data.getString("preset").equals("alpha") || data.getString("preset").equals("transparent") || data.getString("preset").equals("transparency")),
                 data -> (type, player) -> new OverlayPower(
                             type, player,
                             data.hashCode(), // thankfully, the hash is consistent, and powers with identical JSON files even get a different hash!
@@ -94,8 +48,17 @@ public class AlluyslOriginsPowers {
                             data.getInt("up_ticks"),
                             data.getInt("down_ticks"),
                             data.getId("texture"),
-                            isClassicAlphaAlias(data.getString("style")) ?
-                                    "classic_alpha" : data.getString("style"),
+                            data.getString("preset").equals("alpha") || data.getString("preset").equals("transparent") || data.getString("preset").equals("transparency") ?
+                                    "alpha" :
+                            data.getString("preset").equals("mask") ?
+                                    "classic" :
+                                    data.getString("preset"),
+                            data.getString("scaling_x").equals("")?
+                                    data.getString("scaling") : data.getString("scaling_x"),
+                            data.getString("scaling_y").equals("")?
+                                    data.getString("scaling") : data.getString("scaling_y"),
+                            data.getInt("base_scale_x"),
+                            data.getInt("base_scale_y"),
                             data.getFloat("start_scale"),
                             data.getFloat("scale"),
                             data.getString("blend_equation").equals("") ?
