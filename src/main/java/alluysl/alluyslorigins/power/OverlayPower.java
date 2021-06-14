@@ -14,38 +14,44 @@ public class OverlayPower extends Power {
 
     private final int id;
     public float r, g, b, a;
+    public String profile;
+    public boolean flipProfileTime, flipProfileValue;
     public int
             upTicks, /** amount of ticks for the overlay to fully appear */
             downTicks; /** amount of ticks for the overlay to fully disappear */
-    public boolean cyclic;
-    public String cycleType;
+    public boolean cyclic, mirror;
     public Identifier texture;
     public String preset, /** the type of overlay positioning */
             scalingX, scalingY;
     public int baseWidth, baseHeight; /** the base scale reference for constant scaling */
     public int blendEquation, srcFactor, dstFactor, srcAlpha, dstAlpha; /** OpenGL blending parameters */
     public boolean ratioDrivesColor, ratioDrivesAlpha; /** whether the progress ratio of the overlay should influence the color/alpha values */
+    public boolean showOnZeroRatio, showOnOneRatio;
     public float startScale, /** scale at ratio 0 */
             endScale; /** scale at ratio 1 */
 
     public OverlayPower(PowerType<?> type, PlayerEntity player, int id,
                         float r, float g, float b, float a,
-                        int upTicks, int downTicks, boolean cyclic, String cycleType,
+                        String profile, boolean flipProfileTime, boolean flipProfileValue,
+                        int upTicks, int downTicks, boolean cyclic, boolean mirror,
                         Identifier texture, String preset,
                         String scalingX, String scalingY, int baseWidth, int baseHeight,
                         float startScale, float endScale, String blendEquation,
                         String srcFactor, String dstFactor, String srcAlpha, String dstAlpha,
-                        boolean ratioDrivesColor, boolean ratioDrivesAlpha) {
+                        boolean showOnZeroRatio, boolean showOnOneRatio, boolean ratioDrivesColor, boolean ratioDrivesAlpha) {
         super(type, player);
         this.id = id;
         this.r = MathHelper.clamp(r, 0.0F, 1.0F);
         this.g = MathHelper.clamp(g, 0.0F, 1.0F);
         this.b = MathHelper.clamp(b, 0.0F, 1.0F);
         this.a = MathHelper.clamp(a, 0.0F, 1.0F);
+        this.profile = getProfile(profile);
+        this.flipProfileTime = flipProfileTime;
+        this.flipProfileValue = flipProfileValue;
         this.upTicks = Math.max(upTicks, 0);
         this.downTicks = Math.max(downTicks, 0);
         this.cyclic = cyclic;
-        this.cycleType = getCycleType(cycleType);
+        this.mirror = mirror;
         this.texture = texture;
         this.preset = preset;
         this.scalingX = getScaling(scalingX);
@@ -59,21 +65,20 @@ public class OverlayPower extends Power {
         this.dstFactor = getFactor(dstFactor, true);
         this.srcAlpha = srcAlpha.equals("") ? this.srcFactor : getFactor(srcFactor, false);
         this.dstAlpha = dstAlpha.equals("") ? this.dstFactor : getFactor(dstFactor, true);
+        this.showOnZeroRatio = showOnZeroRatio;
+        this.showOnOneRatio = showOnOneRatio;
         this.ratioDrivesColor = ratioDrivesColor;
         this.ratioDrivesAlpha = ratioDrivesAlpha;
     }
 
-    private String getCycleType(String name){
-        if (!cyclic)
-            return "";
+    private String getProfile(String name){
         switch (name){
-            case "saw": return "saw";
-            case "triangle": case "triangular": return "triangle";
+            case "linear": case "line": case "default": case "normal": return "linear";
             case "circle": case "circular": case "half-circle": case "half_circle": return "circle";
             case "cos": case "cosine": case "sin": case "sine": case "sinusoid": case "trig": case "trigo": case "trigonometric": return "trig";
             default:
-                System.out.println("[Alluysl's Origins] Warning: unrecognized cycle mode '" + name + "', defaulting to 'saw'.");
-                return "saw";
+                System.out.println("[Alluysl's Origins] Warning: unrecognized profile '" + name + "', defaulting to 'linear'.");
+                return "linear";
         }
     }
 

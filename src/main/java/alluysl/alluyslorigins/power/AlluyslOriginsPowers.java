@@ -19,10 +19,13 @@ public class AlluyslOriginsPowers {
                         .add("g", SerializableDataType.FLOAT, 1.0F)
                         .add("b", SerializableDataType.FLOAT, 1.0F)
                         .add("a", SerializableDataType.FLOAT, 1.0F)
+                        .add("profile", SerializableDataType.STRING, "linear")
+                        .add("flip_profile_time", SerializableDataType.BOOLEAN, false)
+                        .add("flip_profile_value", SerializableDataType.BOOLEAN, false)
                         .add("up_ticks", SerializableDataType.INT, 0)
                         .addFunctionedDefault("down_ticks", SerializableDataType.INT, data -> data.getInt("up_ticks"))
                         .add("cyclic", SerializableDataType.BOOLEAN, false)
-                        .add("cycle_type", SerializableDataType.STRING, "saw")
+                        .add("mirror_cycle", SerializableDataType.BOOLEAN, false)
                         .add("texture", SerializableDataType.IDENTIFIER, new Identifier("textures/misc/nausea.png"))
                         .add("preset", SerializableDataType.STRING, "classic")
                         .add("scaling", SerializableDataType.STRING, "stretch")
@@ -38,6 +41,8 @@ public class AlluyslOriginsPowers {
                         .add("destination_factor", SerializableDataType.STRING, "")
                         .add("source_alpha_factor", SerializableDataType.STRING, "")
                         .add("destination_alpha_factor", SerializableDataType.STRING, "")
+                        .add("show_on_zero_ratio", SerializableDataType.BOOLEAN, false)
+                        .add("show_on_one_ratio", SerializableDataType.BOOLEAN, true)
                         .addFunctionedDefault("ratio_drives_color", SerializableDataType.BOOLEAN, data -> data.getString("preset").equals("classic") || data.getString("preset").equals("mask"))
                         .addFunctionedDefault("ratio_drives_alpha", SerializableDataType.BOOLEAN, data -> data.getString("preset").equals("alpha") || data.getString("preset").equals("transparent") || data.getString("preset").equals("transparency")),
                 data -> (type, player) -> new OverlayPower(
@@ -47,10 +52,13 @@ public class AlluyslOriginsPowers {
                             data.getFloat("g"),
                             data.getFloat("b"),
                             data.getFloat("a"),
+                            data.getString("profile"),
+                            data.getBoolean("flip_profile_time"),
+                            data.getBoolean("flip_profile_value"),
                             data.getInt("up_ticks"),
                             data.getInt("down_ticks"),
                             data.getBoolean("cyclic"),
-                            data.getString("cycle_type"),
+                            data.getBoolean("mirror_cycle"),
                             data.getId("texture"),
                             data.getString("preset").equals("alpha") || data.getString("preset").equals("transparent") || data.getString("preset").equals("transparency") ?
                                     "alpha" :
@@ -71,6 +79,8 @@ public class AlluyslOriginsPowers {
                             data.getString("destination_factor"),
                             data.getString("source_alpha_factor"),
                             data.getString("destination_alpha_factor"),
+                            data.getBoolean("show_on_zero_ratio"),
+                            data.getBoolean("show_on_one_ratio"),
                             data.getBoolean("ratio_drives_color"),
                             data.getBoolean("ratio_drives_alpha"))
         ).allowCondition());

@@ -177,13 +177,19 @@ public abstract class GameRendererMixin {
         setTextureBoxed(left, top, width, height);
     }
 
-    private float transformRatio(float ratio, String cycleType){
-        switch (cycleType){
-            case "triangle": return 1.0F - Math.abs(1.0F - 2.0F * ratio);
-            case "circle": return (float)(2.0D * Math.sqrt(ratio * (1.0F - ratio))); // big problems if ratio isn't between 0 and 1!
-            case "trig": return (float)(0.5D - Math.cos(ratio * 2.0D * Math.PI) / 2.0D);
+    private float transformRatio(OverlayPower power, float ratio){
+        if (power.mirror)
+            ratio = 1.0F - Math.abs(1.0F - 2.0F * ratio);
+        if (power.flipProfileTime)
+            ratio = 1.0F - ratio;
+        float res = ratio;
+        switch (power.profile){
+            case "circle": res = (float)(Math.sqrt(ratio * (2.0F - ratio))); break;
+            case "trig": res = (float)(0.5D - Math.cos(ratio * Math.PI) / 2.0D); break;
         }
-        return ratio; // saw
+        if (power.flipProfileValue)
+            res = 1.0F - res;
+        return res;
     }
 
     private void drawOverlay(OverlayPower power, float ratio){
@@ -245,10 +251,9 @@ public abstract class GameRendererMixin {
                         );
                 }
 
-                if (power.cyclic && (active || info.ratio > 1.0F))
-                    drawOverlay(power, transformRatio(info.ratio, power.cycleType));
-                else if (info.ratio > 0.0F)
-                    drawOverlay(power, info.ratio);
+                if (power.cyclic && (active || info.ratio > 0.0F)
+                    || (info.ratio > 0.0F || power.showOnZeroRatio) && (info.ratio < 1.0F || power.showOnOneRatio))
+                    drawOverlay(power, transformRatio(power, info.ratio));
             }
 
         }
