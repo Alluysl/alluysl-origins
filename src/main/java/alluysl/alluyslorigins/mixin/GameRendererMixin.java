@@ -182,14 +182,10 @@ public abstract class GameRendererMixin {
             ratio = 1.0F - Math.abs(1.0F - 2.0F * ratio);
         if (power.flipProfileTime)
             ratio = 1.0F - ratio;
-        float res = ratio;
-        switch (power.profile){
-            case "circle": res = (float)(Math.sqrt(ratio * (2.0F - ratio))); break;
-            case "trig": res = (float)(0.5D - Math.cos(ratio * Math.PI) / 2.0D); break;
-        }
+        ratio = power.profile.apply(ratio);
         if (power.flipProfileValue)
-            res = 1.0F - res;
-        return res;
+            ratio = 1.0F - ratio;
+        return ratio;
     }
 
     private void drawOverlay(OverlayPower power, float ratio){

@@ -8,13 +8,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.function.Function;
+
 import static org.lwjgl.opengl.GL14.*;
 
 public class OverlayPower extends Power {
 
     private final int id;
     public float r, g, b, a;
-    public String profile;
+    public Function<Float, Float> profile;
     public boolean flipProfileTime, flipProfileValue;
     public int
             upTicks, /** amount of ticks for the overlay to fully appear */
@@ -71,14 +73,25 @@ public class OverlayPower extends Power {
         this.ratioDrivesAlpha = ratioDrivesAlpha;
     }
 
-    private String getProfile(String name){
+    private Function<Float, Float> getProfile(String name){
         switch (name){
-            case "linear": case "line": case "default": case "normal": return "linear";
-            case "circle": case "circular": case "half-circle": case "half_circle": return "circle";
-            case "cos": case "cosine": case "sin": case "sine": case "sinusoid": case "trig": case "trigo": case "trigonometric": return "trig";
+            case "linear": case "line": case "default": case "normal":
+                return ratio -> ratio;
+            case "circle": case "circular": case "half-circle": case "half_circle":
+                return ratio -> (float)(Math.sqrt(ratio * (2.0F - ratio)));
+            case "square": case "ease_in":
+                return ratio -> ratio * ratio;
+            case "ease_out":
+                return ratio -> 1.0F - (1.0F - ratio) * (1.0F - ratio); // can also be achieved by using ease_in and flipping on both axes
+            case "ease_in_out":
+                return ratio -> ratio < 0.5 ? 2 * ratio * ratio : 1.0F - 2 * (1.0F - ratio) * (1.0F - ratio);
+            case "sqrt": case "square_root": case "root":
+                return ratio -> (float)Math.sqrt(ratio);
+            case "cos": case "cosine": case "sin": case "sine": case "sinusoid": case "trig": case "trigo": case "trigonometric":
+                return ratio -> (float)(0.5D - Math.cos(ratio * Math.PI) / 2.0D);
             default:
                 System.out.println("[Alluysl's Origins] Warning: unrecognized profile '" + name + "', defaulting to 'linear'.");
-                return "linear";
+                return ratio -> ratio;
         }
     }
 

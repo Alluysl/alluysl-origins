@@ -16,9 +16,13 @@ public class AlluyslOriginsPowers {
                 new Identifier(AlluyslOrigins.MODID, "overlay"),
                 new SerializableData()
                         .add("r", SerializableDataType.FLOAT, 1.0F)
+                        .add("red", SerializableDataType.FLOAT, 1.0F) // alias
                         .add("g", SerializableDataType.FLOAT, 1.0F)
+                        .add("green", SerializableDataType.FLOAT, 1.0F) // alias
                         .add("b", SerializableDataType.FLOAT, 1.0F)
+                        .add("blue", SerializableDataType.FLOAT, 1.0F) // alias
                         .add("a", SerializableDataType.FLOAT, 1.0F)
+                        .add("alpha", SerializableDataType.FLOAT, 1.0F) // alias
                         .add("profile", SerializableDataType.STRING, "linear")
                         .add("flip_profile_time", SerializableDataType.BOOLEAN, false)
                         .add("flip_profile_value", SerializableDataType.BOOLEAN, false)
@@ -36,7 +40,7 @@ public class AlluyslOriginsPowers {
                         .add("scale", SerializableDataType.FLOAT, 1.0F)
                         .addFunctionedDefault("start_scale", SerializableDataType.FLOAT, data -> data.getFloat("scale"))
                         .add("blend_equation", SerializableDataType.STRING, "")
-                        .add("blend_mode", SerializableDataType.STRING, "")
+                        .add("blend_mode", SerializableDataType.STRING, "") // alias
                         .add("source_factor", SerializableDataType.STRING, "")
                         .add("destination_factor", SerializableDataType.STRING, "")
                         .add("source_alpha_factor", SerializableDataType.STRING, "")
@@ -48,10 +52,14 @@ public class AlluyslOriginsPowers {
                 data -> (type, player) -> new OverlayPower(
                             type, player,
                             data.hashCode(), // thankfully, the hash is consistent, and powers with identical JSON files even get a different hash!
-                            data.getFloat("r"),
-                            data.getFloat("g"),
-                            data.getFloat("b"),
-                            data.getFloat("a"),
+                            data.getFloat("r") == 1.0F ?
+                                    data.getFloat("red") : data.getFloat("r"),
+                            data.getFloat("g") == 1.0F ?
+                                    data.getFloat("green") : data.getFloat("g"),
+                            data.getFloat("b") == 1.0F ?
+                                    data.getFloat("blue") : data.getFloat("b"),
+                            data.getFloat("a") == 1.0F ?
+                                    data.getFloat("alpha") : data.getFloat("a"),
                             data.getString("profile"),
                             data.getBoolean("flip_profile_time"),
                             data.getBoolean("flip_profile_value"),
