@@ -8,7 +8,14 @@ import io.github.apace100.origins.util.SerializableDataType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.util.Arrays;
+
 public class AlluyslOriginsPowers {
+
+    // As I heard, variadic arguments are just syntactic sugar in Java, so they (allegedly) aren't more performant than instancing array objects
+    private static <T> T processAliases(T[] values, T defaultValue){
+        return Arrays.stream(values).filter(value -> !(value.equals(defaultValue))).findFirst().orElse(defaultValue);
+    }
 
     public static void register(){
 
@@ -47,19 +54,17 @@ public class AlluyslOriginsPowers {
                         .add("destination_alpha_factor", SerializableDataType.STRING, "")
                         .add("show_on_zero_ratio", SerializableDataType.BOOLEAN, false)
                         .add("show_on_one_ratio", SerializableDataType.BOOLEAN, true)
-                        .addFunctionedDefault("ratio_drives_color", SerializableDataType.BOOLEAN, data -> data.getString("preset").equals("classic") || data.getString("preset").equals("mask"))
-                        .addFunctionedDefault("ratio_drives_alpha", SerializableDataType.BOOLEAN, data -> data.getString("preset").equals("alpha") || data.getString("preset").equals("transparent") || data.getString("preset").equals("transparency")),
+                        .addFunctionedDefault("ratio_drives_color", SerializableDataType.BOOLEAN,
+                                data -> Arrays.asList("classic", "mask").contains(data.getString("preset")))
+                        .addFunctionedDefault("ratio_drives_alpha", SerializableDataType.BOOLEAN,
+                                data -> Arrays.asList("alpha", "transparent", "transparency").contains(data.getString("preset"))),
                 data -> (type, player) -> new OverlayPower(
                             type, player,
                             data.hashCode(), // thankfully, the hash is consistent, and powers with identical JSON files even get a different hash!
-                            data.getFloat("r") == 1.0F ?
-                                    data.getFloat("red") : data.getFloat("r"),
-                            data.getFloat("g") == 1.0F ?
-                                    data.getFloat("green") : data.getFloat("g"),
-                            data.getFloat("b") == 1.0F ?
-                                    data.getFloat("blue") : data.getFloat("b"),
-                            data.getFloat("a") == 1.0F ?
-                                    data.getFloat("alpha") : data.getFloat("a"),
+                            processAliases(new Float[]{data.getFloat("r"), data.getFloat("red")}, 1.0F),
+                            processAliases(new Float[]{data.getFloat("g"), data.getFloat("green")}, 1.0F),
+                            processAliases(new Float[]{data.getFloat("b"), data.getFloat("blue")}, 1.0F),
+                            processAliases(new Float[]{data.getFloat("a"), data.getFloat("alpha")}, 1.0F),
                             data.getString("profile"),
                             data.getBoolean("flip_profile_time"),
                             data.getBoolean("flip_profile_value"),
@@ -70,19 +75,18 @@ public class AlluyslOriginsPowers {
                             data.getId("texture"),
                             data.getString("preset").equals("alpha") || data.getString("preset").equals("transparent") || data.getString("preset").equals("transparency") ?
                                     "alpha" :
-                            data.getString("preset").equals("mask") ?
+                                    data.getString("preset").equals("mask") ?
                                     "classic" :
                                     data.getString("preset"),
                             data.getString("scaling_x").equals("")?
-                                    data.getString("scaling") : data.getString("scaling_x"),
+                                    data.getString("scaling") : data.getString("scaling_x"), // could use a functioned default
                             data.getString("scaling_y").equals("")?
-                                    data.getString("scaling") : data.getString("scaling_y"),
+                                    data.getString("scaling") : data.getString("scaling_y"), // could use a functioned default
                             data.getInt("base_scale_x"),
                             data.getInt("base_scale_y"),
                             data.getFloat("start_scale"),
                             data.getFloat("scale"),
-                            data.getString("blend_equation").equals("") ?
-                                    data.getString("blend_mode") : data.getString("blend_equation"),
+                            processAliases(new String[]{data.getString("blend_equation"), data.getString("blend_mode")}, ""),
                             data.getString("source_factor"),
                             data.getString("destination_factor"),
                             data.getString("source_alpha_factor"),
