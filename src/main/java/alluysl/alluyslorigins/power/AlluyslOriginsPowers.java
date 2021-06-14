@@ -21,6 +21,8 @@ public class AlluyslOriginsPowers {
                         .add("a", SerializableDataType.FLOAT, 1.0F)
                         .add("up_ticks", SerializableDataType.INT, 0)
                         .addFunctionedDefault("down_ticks", SerializableDataType.INT, data -> data.getInt("up_ticks"))
+                        .add("cyclic", SerializableDataType.BOOLEAN, false)
+                        .add("cycle_type", SerializableDataType.STRING, "saw")
                         .add("texture", SerializableDataType.IDENTIFIER, new Identifier("textures/misc/nausea.png"))
                         .add("preset", SerializableDataType.STRING, "classic")
                         .add("scaling", SerializableDataType.STRING, "stretch")
@@ -47,6 +49,8 @@ public class AlluyslOriginsPowers {
                             data.getFloat("a"),
                             data.getInt("up_ticks"),
                             data.getInt("down_ticks"),
+                            data.getBoolean("cyclic"),
+                            data.getString("cycle_type"),
                             data.getId("texture"),
                             data.getString("preset").equals("alpha") || data.getString("preset").equals("transparent") || data.getString("preset").equals("transparency") ?
                                     "alpha" :

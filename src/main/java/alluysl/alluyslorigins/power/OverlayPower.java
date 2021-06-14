@@ -17,6 +17,8 @@ public class OverlayPower extends Power {
     public int
             upTicks, /** amount of ticks for the overlay to fully appear */
             downTicks; /** amount of ticks for the overlay to fully disappear */
+    public boolean cyclic;
+    public String cycleType;
     public Identifier texture;
     public String preset, /** the type of overlay positioning */
             scalingX, scalingY;
@@ -28,7 +30,8 @@ public class OverlayPower extends Power {
 
     public OverlayPower(PowerType<?> type, PlayerEntity player, int id,
                         float r, float g, float b, float a,
-                        int upTicks, int downTicks, Identifier texture, String preset,
+                        int upTicks, int downTicks, boolean cyclic, String cycleType,
+                        Identifier texture, String preset,
                         String scalingX, String scalingY, int baseWidth, int baseHeight,
                         float startScale, float endScale, String blendEquation,
                         String srcFactor, String dstFactor, String srcAlpha, String dstAlpha,
@@ -41,6 +44,8 @@ public class OverlayPower extends Power {
         this.a = MathHelper.clamp(a, 0.0F, 1.0F);
         this.upTicks = Math.max(upTicks, 0);
         this.downTicks = Math.max(downTicks, 0);
+        this.cyclic = cyclic;
+        this.cycleType = getCycleType(cycleType);
         this.texture = texture;
         this.preset = preset;
         this.scalingX = getScaling(scalingX);
@@ -56,6 +61,20 @@ public class OverlayPower extends Power {
         this.dstAlpha = dstAlpha.equals("") ? this.dstFactor : getFactor(dstFactor, true);
         this.ratioDrivesColor = ratioDrivesColor;
         this.ratioDrivesAlpha = ratioDrivesAlpha;
+    }
+
+    private String getCycleType(String name){
+        if (!cyclic)
+            return "";
+        switch (name){
+            case "saw": return "saw";
+            case "triangle": case "triangular": return "triangle";
+            case "circle": case "circular": case "half-circle": case "half_circle": return "circle";
+            case "cos": case "cosine": case "sin": case "sine": case "sinusoid": case "trig": case "trigo": case "trigonometric": return "trig";
+            default:
+                System.out.println("[Alluysl's Origins] Warning: unrecognized cycle mode '" + name + "', defaulting to 'saw'.");
+                return "saw";
+        }
     }
 
     private String getScaling(String name){

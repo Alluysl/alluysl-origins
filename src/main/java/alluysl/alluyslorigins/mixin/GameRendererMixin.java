@@ -177,6 +177,15 @@ public abstract class GameRendererMixin {
         setTextureBoxed(left, top, width, height);
     }
 
+    private float transformRatio(float ratio, String cycleType){
+        switch (cycleType){
+            case "triangle": return 1.0F - Math.abs(1.0F - 2.0F * ratio);
+            case "circle": return (float)(2.0D * Math.sqrt(ratio * (1.0F - ratio))); // big problems if ratio isn't between 0 and 1!
+            case "trig": return (float)(0.5D - Math.cos(ratio * 2.0D * Math.PI) / 2.0D);
+        }
+        return ratio; // saw
+    }
+
     private void drawOverlay(OverlayPower power, float ratio){
         setTextureCentered(MathHelper.lerp(ratio, power.startScale, power.endScale),
                 power.scalingX, power.scalingY, power.baseWidth, power.baseHeight);
@@ -210,7 +219,7 @@ public abstract class GameRendererMixin {
 
         if (this.client.player == null)
             return;
-        
+
         for (OverlayPower power : ModComponents.ORIGIN.get(this.client.player).getPowers(OverlayPower.class, true)) {
             int id = power.getId();
             boolean active = power.isActive();
@@ -224,14 +233,21 @@ public abstract class GameRendererMixin {
 
                 if (currentTick != previousTick) {
 
-                    info.ratio = MathHelper.clamp(
+                    if (active && power.cyclic && power.upTicks != 0) { // if cyclic, version that doesn't clamp but switches to new cycle instead
+                        info.ratio += 1.0F / power.upTicks;
+                        if (info.ratio > 1.0F) // can't use modulo else it's set to 0 when it's supposed to be 1 (supposing the IEEE 754 format allows that to happen)
+                            info.ratio -= 1.0F;
+                    } else
+                        info.ratio = MathHelper.clamp(
                             active ? (power.upTicks == 0 ? 1.0F : info.ratio + 1.0F / power.upTicks)
                                     : (power.downTicks == 0 ? 0.0F : info.ratio - 1.0F / power.downTicks),
                             0.0F, 1.0F
-                    );
+                        );
                 }
 
-                if (info.ratio > 0.0F)
+                if (power.cyclic && (active || info.ratio > 1.0F))
+                    drawOverlay(power, transformRatio(info.ratio, power.cycleType));
+                else if (info.ratio > 0.0F)
                     drawOverlay(power, info.ratio);
             }
 
