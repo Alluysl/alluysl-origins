@@ -62,8 +62,8 @@ public class OverlayPower extends Power {
         switch (name){
             case "x": case "width": return "x";
             case "y": case "height": return "y";
-            case "min": case "minimum": return "min";
-            case "max": case "maximum": return "max";
+            case "min": case "minimum": case "fit": return "min";
+            case "max": case "maximum": case "fill": case "cover": return "max";
             case "avg": case "average": case "median": return "avg";
             case "fixed": case "absolute": case "constant": case "texture": return "fixed";
             case "stretch": case "stretched": return "stretch";
@@ -114,7 +114,7 @@ public class OverlayPower extends Power {
     public int getId(){
         return id;
     }
-
+    
     @Override
     public String toString(){
         return super.toString() + " | id " + id + " | rgba " + r + " " + g + " " + b + " " + a + " | ticks " + upTicks + " up " + downTicks + " down | " + texture + " | " + preset + " | " + startScale + " -> " + endScale;

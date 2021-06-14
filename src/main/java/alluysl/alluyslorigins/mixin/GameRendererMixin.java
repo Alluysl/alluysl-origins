@@ -121,7 +121,7 @@ public abstract class GameRendererMixin {
         switch (scalingX){
             case "y":
                 //noinspection SuspiciousNameCombination
-                width = clientHeight;
+                width = textureWidth * clientHeight / (double)textureHeight;
                 break;
             case "min":
                 if (clientWidth * textureHeight > clientHeight * textureWidth)
@@ -147,7 +147,7 @@ public abstract class GameRendererMixin {
         switch (scalingY){
             case "x":
                 //noinspection SuspiciousNameCombination
-                height = clientWidth;
+                height = textureHeight * clientWidth / (double)textureWidth;
                 break;
             case "min":
                 if (clientHeight * textureWidth > clientWidth * textureHeight)
