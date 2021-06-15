@@ -33,8 +33,8 @@ public class AlluyslOriginsPowers {
                         .add("profile", SerializableDataType.STRING, "linear")
                         .add("flip_profile_time", SerializableDataType.BOOLEAN, false)
                         .add("flip_profile_value", SerializableDataType.BOOLEAN, false)
-                        .add("interpolate", SerializableDataType.BOOLEAN, false)
-                        .add("lerp", SerializableDataType.BOOLEAN, false)
+                        .add("interpolate", SerializableDataType.BOOLEAN, true)
+                        .add("lerp", SerializableDataType.BOOLEAN, true)
                         .add("up_ticks", SerializableDataType.INT, 0)
                         .addFunctionedDefault("down_ticks", SerializableDataType.INT, data -> data.getInt("up_ticks"))
                         .add("cyclic", SerializableDataType.BOOLEAN, false)
@@ -70,7 +70,7 @@ public class AlluyslOriginsPowers {
                             data.getString("profile"),
                             data.getBoolean("flip_profile_time"),
                             data.getBoolean("flip_profile_value"),
-                            processAliases(new Boolean[]{data.getBoolean("interpolate"), data.getBoolean("lerp")}, false),
+                            processAliases(new Boolean[]{data.getBoolean("interpolate"), data.getBoolean("lerp")}, true),
                             data.getInt("up_ticks"),
                             data.getInt("down_ticks"),
                             data.getBoolean("cyclic"),
