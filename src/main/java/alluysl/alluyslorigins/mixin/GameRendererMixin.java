@@ -240,9 +240,7 @@ public abstract class GameRendererMixin {
                 if (currentTick != previousTick) {
 
                     if (active && power.cyclic && power.upTicks != 0) { // if cyclic, version that doesn't clamp but switches to new cycle instead
-                        info.ratio += 1.0F / power.upTicks;
-                        if (info.ratio > 1.0F) // can't use modulo else it's set to 0 when it's supposed to be 1 (supposing the IEEE 754 format allows that to happen)
-                            info.ratio -= 1.0F;
+                        info.ratio += 1.0F / power.upTicks; // overflow checked later
                     } else
                         info.ratio = MathHelper.clamp(
                             active ? (power.upTicks == 0 ? 1.0F : info.ratio + 1.0F / power.upTicks)
@@ -251,7 +249,7 @@ public abstract class GameRendererMixin {
                         );
                 }
 
-                float ratio = info.ratio;
+                // Interpolate the ratio to smooth it
                 // Ideally the interpolation would be decided by a config option on the client side, not by the power
                 if (power.interpolate){
                     if (currentTickFrames >= previousTickFrames)
@@ -259,9 +257,18 @@ public abstract class GameRendererMixin {
                     else if (info.ratio > info.interpolatedRatio)
                         info.interpolatedRatio = Math.min(info.ratio, info.interpolatedRatio + (info.ratio - info.interpolatedRatio) / (previousTickFrames - currentTickFrames + 1));
                     else if (info.ratio < info.interpolatedRatio)
-                        info.interpolatedRatio = Math.max(info.ratio, info.interpolatedRatio - (info.ratio - info.interpolatedRatio) / (previousTickFrames - currentTickFrames + 1));
-                    ratio = info.interpolatedRatio;
+                        info.interpolatedRatio = Math.max(info.ratio, info.interpolatedRatio + (info.ratio - info.interpolatedRatio) / (previousTickFrames - currentTickFrames + 1));
+                } else
+                    info.interpolatedRatio = info.ratio;
+
+                // Cycling "overflow" handling
+                if (info.ratio > 1.0F){
+                    info.ratio -= 1.0F;
+                    info.interpolatedRatio -= 1.0F;
                 }
+                float ratio = info.interpolatedRatio < 0.0F ? info.interpolatedRatio + 1.0F : info.interpolatedRatio;
+                System.out.println(ratio);
+                System.out.println(ratio > 1.0F || ratio < 0.0F);
 
                 if (power.cyclic && (active || ratio > 0.0F)
                     || (ratio > 0.0F || power.showOnZeroRatio) && (ratio < 1.0F || power.showOnOneRatio))
