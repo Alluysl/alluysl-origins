@@ -260,6 +260,7 @@ public abstract class GameRendererMixin {
                         info.interpolatedRatio = Math.min(info.ratio, info.interpolatedRatio + (info.ratio - info.interpolatedRatio) / (previousTickFrames - currentTickFrames + 1));
                     else if (info.ratio < info.interpolatedRatio)
                         info.interpolatedRatio = Math.max(info.ratio, info.interpolatedRatio - (info.ratio - info.interpolatedRatio) / (previousTickFrames - currentTickFrames + 1));
+                    ratio = info.interpolatedRatio;
                 }
 
                 if (power.cyclic && (active || ratio > 0.0F)
