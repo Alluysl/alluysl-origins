@@ -266,8 +266,6 @@ public abstract class GameRendererMixin {
                     info.interpolatedRatio -= 1.0F;
                 }
                 float ratio = info.interpolatedRatio < 0.0F ? info.interpolatedRatio + 1.0F : info.interpolatedRatio;
-                System.out.println(ratio);
-                System.out.println(ratio > 1.0F || ratio < 0.0F);
 
                 if (power.cyclic && (active || ratio > 0.0F)
                     || (ratio > 0.0F || power.showOnZeroRatio) && (ratio < 1.0F || power.showOnOneRatio))
