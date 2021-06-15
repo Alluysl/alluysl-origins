@@ -18,6 +18,7 @@ public class OverlayPower extends Power {
     public float r, g, b, a;
     public Function<Float, Float> profile;
     public boolean flipProfileTime, flipProfileValue;
+    public boolean interpolate;
     public int
             upTicks, /** amount of ticks for the overlay to fully appear */
             downTicks; /** amount of ticks for the overlay to fully disappear */
@@ -35,7 +36,7 @@ public class OverlayPower extends Power {
     public OverlayPower(PowerType<?> type, PlayerEntity player, int id,
                         float r, float g, float b, float a,
                         String profile, boolean flipProfileTime, boolean flipProfileValue,
-                        int upTicks, int downTicks, boolean cyclic, boolean mirror,
+                        boolean interpolate, int upTicks, int downTicks, boolean cyclic, boolean mirror,
                         Identifier texture, String preset,
                         String scalingX, String scalingY, int baseWidth, int baseHeight,
                         float startScale, float endScale, String blendEquation,
@@ -50,6 +51,7 @@ public class OverlayPower extends Power {
         this.profile = getProfile(profile);
         this.flipProfileTime = flipProfileTime;
         this.flipProfileValue = flipProfileValue;
+        this.interpolate = interpolate;
         this.upTicks = Math.max(upTicks, 0);
         this.downTicks = Math.max(downTicks, 0);
         this.cyclic = cyclic;

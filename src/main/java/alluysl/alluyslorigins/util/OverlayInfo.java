@@ -2,9 +2,24 @@ package alluysl.alluyslorigins.util;
 
 public class OverlayInfo {
 
-    public float ratio;
+    private float ratio;
+    private float previousRatio;
 
     public OverlayInfo(boolean activeOnFirstTick){
-        ratio = activeOnFirstTick ? 1.0F : 0.0F;
+        previousRatio = ratio = activeOnFirstTick ? 1.0F : 0.0F;
+    }
+
+    public float getRatio() {
+        return ratio;
+    }
+
+    public float getPreviousRatio() {
+        return previousRatio;
+    }
+
+    public void setRatio(float newRatio, boolean updatePrevious) {
+        if (updatePrevious)
+            previousRatio = ratio;
+        ratio = newRatio;
     }
 }
