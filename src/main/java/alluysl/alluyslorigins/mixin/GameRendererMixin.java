@@ -215,9 +215,8 @@ public abstract class GameRendererMixin {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"))
     private void drawOverlays(CallbackInfo ci) {
-        int currentTick = ticks;
 
-        if (previousTick != currentTick) {
+        if (previousTick != ticks) {
             previousTickFrames = currentTickFrames;
             currentTickFrames = 1;
         } else
@@ -237,7 +236,7 @@ public abstract class GameRendererMixin {
 
             if (info != null) {
 
-                if (currentTick != previousTick) {
+                if (ticks != previousTick) {
 
                     if (active && power.cyclic && power.upTicks != 0) { // if cyclic, version that doesn't clamp but switches to new cycle instead
                         info.ratio += 1.0F / power.upTicks; // overflow checked later
@@ -277,7 +276,7 @@ public abstract class GameRendererMixin {
 
         }
 
-        previousTick = currentTick;
+        previousTick = ticks;
         firstPass = false;
     }
 }
