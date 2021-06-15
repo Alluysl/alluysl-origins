@@ -240,20 +240,27 @@ public abstract class GameRendererMixin {
                 if (currentTick != previousTick) {
 
                     if (active && power.cyclic && power.upTicks != 0) { // if cyclic, version that doesn't clamp but switches to new cycle instead
-                        info.setRatio(info.getRatio() + 1.0F / power.upTicks, true);
-                        if (info.getRatio() > 1.0F) // can't use modulo else it's set to 0 when it's supposed to be 1 (supposing the IEEE 754 format allows that to happen)
-                            info.setRatio(info.getRatio() - 1.0F, false);
+                        info.ratio += 1.0F / power.upTicks;
+                        if (info.ratio > 1.0F) // can't use modulo else it's set to 0 when it's supposed to be 1 (supposing the IEEE 754 format allows that to happen)
+                            info.ratio -= 1.0F;
                     } else
-                        info.setRatio(MathHelper.clamp(
-                            active ? (power.upTicks == 0 ? 1.0F : info.getRatio() + 1.0F / power.upTicks)
-                                    : (power.downTicks == 0 ? 0.0F : info.getRatio() - 1.0F / power.downTicks),
+                        info.ratio = MathHelper.clamp(
+                            active ? (power.upTicks == 0 ? 1.0F : info.ratio + 1.0F / power.upTicks)
+                                    : (power.downTicks == 0 ? 0.0F : info.ratio - 1.0F / power.downTicks),
                             0.0F, 1.0F
-                        ), true);
+                        );
                 }
 
+                float ratio = info.ratio;
                 // Ideally the interpolation would be decided by a config option on the client side, not by the power
-                float ratio = power.interpolate && previousTickFrames > 0 ? MathHelper.lerp(MathHelper.clamp((float)currentTickFrames / previousTickFrames, 0.0F, 1.0F), info.getPreviousRatio(), info.getRatio())
-                        : info.getRatio();
+                if (power.interpolate){
+                    if (currentTickFrames >= previousTickFrames)
+                        info.interpolatedRatio = info.ratio;
+                    else if (info.ratio > info.interpolatedRatio)
+                        info.interpolatedRatio = Math.min(info.ratio, info.interpolatedRatio + (info.ratio - info.interpolatedRatio) / (previousTickFrames - currentTickFrames + 1));
+                    else if (info.ratio < info.interpolatedRatio)
+                        info.interpolatedRatio = Math.max(info.ratio, info.interpolatedRatio - (info.ratio - info.interpolatedRatio) / (previousTickFrames - currentTickFrames + 1));
+                }
 
                 if (power.cyclic && (active || ratio > 0.0F)
                     || (ratio > 0.0F || power.showOnZeroRatio) && (ratio < 1.0F || power.showOnOneRatio))
