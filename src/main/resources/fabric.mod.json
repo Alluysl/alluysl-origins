@@ -9,7 +9,9 @@
     "Alluysl"
   ],
   "contact": {
-    "sources": "https://github.com/Alluysl/alluysl-origins"
+    "homepage": "https://github.com/Alluysl/alluysl-origins",
+    "sources": "https://github.com/Alluysl/alluysl-origins",
+    "issues": "https://github.com/Alluysl/alluysl-origins/issues"
   },
 
   "license": "https://github.com/Alluysl/alluysl-origins/blob/master/LICENSE",
