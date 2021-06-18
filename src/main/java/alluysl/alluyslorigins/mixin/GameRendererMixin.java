@@ -28,12 +28,12 @@ public abstract class GameRendererMixin {
 
     private final int defaultBlendEquation = GL_FUNC_ADD;
 
-    private float r = 0, g = 0, b = 0, a = 1.0F;
+    private float r, g, b, a;
     private final double[][] vertices = new double[4][2];
-    private Identifier texture = null;
-    int textureId = -1;
-    private int blendEquation = defaultBlendEquation;
-    private int srcFactor = GL_ONE, dstFactor = GL_ONE, srcAlpha = GL_ONE, dstAlpha = GL_ONE;
+    private Identifier texture;
+    int textureId;
+    private int blendEquation;
+    private int srcFactor, dstFactor, srcAlpha, dstAlpha;
 
     private void resetTexture(){
         texture = null;
@@ -201,11 +201,25 @@ public abstract class GameRendererMixin {
         drawTexture();
     }
 
-    private int previousTick = 0;
-    private int previousTickFrames = 0, currentTickFrames = 0;
-    private boolean firstPass = true;
+    private int previousTick;
+    private int previousTickFrames, currentTickFrames;
+    private boolean firstPass;
 
     private final Map<Integer, OverlayInfo> overlayInfoMap = new ConcurrentHashMap<>();
+
+    // Called when you join/leave a world
+    @Inject(method = "reset", at = @At("HEAD"))
+    private void resetOverlays(CallbackInfo ci){
+        r = g = b = 0.0F;
+        a = 1.0F;
+        resetTexture();
+        blendEquation = defaultBlendEquation;
+        srcFactor = dstFactor = srcAlpha = dstAlpha = GL_ONE;
+        previousTick = 0;
+        previousTickFrames = currentTickFrames = 0;
+        firstPass = true;
+        overlayInfoMap.clear();
+    }
 
     @Shadow private int ticks;
 
