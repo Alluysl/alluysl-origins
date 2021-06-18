@@ -32,6 +32,10 @@ public class OverlayPower extends Power {
     public boolean showOnZeroRatio, showOnOneRatio;
     public float startScale, /** scale at ratio 0 */
             endScale; /** scale at ratio 1 */
+    public boolean multiplyRatioByConfiguredStrength; /** whether the ratio should be multiplied by the strength used for the phantom overlay */
+    public boolean staticRatio, /** whether the ratio should be processed as 0 when under the specified threshold and as the client-configured value otherwise, or not (takes effect after multiplyRatioByConfiguredStrength) */
+            staticRatioThresholdInclusive; /** whether the threshold is inclusive or exclusive */
+    public float staticRatioThreshold; /** the threshold needed for the overlay to display in static ratio mode */
 
     public OverlayPower(PowerType<?> type, PlayerEntity player, int id,
                         float r, float g, float b, float a,
@@ -41,7 +45,8 @@ public class OverlayPower extends Power {
                         String scalingX, String scalingY, int baseWidth, int baseHeight,
                         float startScale, float endScale, String blendEquation,
                         String srcFactor, String dstFactor, String srcAlpha, String dstAlpha,
-                        boolean showOnZeroRatio, boolean showOnOneRatio, boolean ratioDrivesColor, boolean ratioDrivesAlpha) {
+                        boolean showOnZeroRatio, boolean showOnOneRatio, boolean ratioDrivesColor, boolean ratioDrivesAlpha,
+                        boolean multiplyRatioByConfiguredStrength, boolean staticRatio, float staticRatioThreshold, boolean staticRatioThresholdInclusive) {
         super(type, player);
         this.id = id;
         this.r = MathHelper.clamp(r, 0.0F, 1.0F);
@@ -73,6 +78,10 @@ public class OverlayPower extends Power {
         this.showOnOneRatio = showOnOneRatio;
         this.ratioDrivesColor = ratioDrivesColor;
         this.ratioDrivesAlpha = ratioDrivesAlpha;
+        this.multiplyRatioByConfiguredStrength = multiplyRatioByConfiguredStrength;
+        this.staticRatio = staticRatio;
+        this.staticRatioThreshold = staticRatioThreshold;
+        this.staticRatioThresholdInclusive = staticRatioThresholdInclusive;
     }
 
     private Function<Float, Float> getProfile(String name){

@@ -56,6 +56,10 @@ public class AlluyslOriginsPowers {
                         .add("destination_alpha_factor", SerializableDataType.STRING, "")
                         .add("show_on_zero_ratio", SerializableDataType.BOOLEAN, false)
                         .add("show_on_one_ratio", SerializableDataType.BOOLEAN, true)
+                        .add("multiply_ratio_by_configured_strength", SerializableDataType.BOOLEAN, false)
+                        .add("static_ratio", SerializableDataType.BOOLEAN, false)
+                        .add("static_ratio_threshold", SerializableDataType.FLOAT, 0.0F)
+                        .add("static_ratio_threshold_inclusive", SerializableDataType.BOOLEAN, false)
                         .addFunctionedDefault("ratio_drives_color", SerializableDataType.BOOLEAN,
                                 data -> Arrays.asList("classic", "mask").contains(data.getString("preset")))
                         .addFunctionedDefault("ratio_drives_alpha", SerializableDataType.BOOLEAN,
@@ -97,7 +101,11 @@ public class AlluyslOriginsPowers {
                             data.getBoolean("show_on_zero_ratio"),
                             data.getBoolean("show_on_one_ratio"),
                             data.getBoolean("ratio_drives_color"),
-                            data.getBoolean("ratio_drives_alpha"))
+                            data.getBoolean("ratio_drives_alpha"),
+                            data.getBoolean("multiply_ratio_by_configured_strength"),
+                            data.getBoolean("static_ratio"),
+                            data.getFloat("static_ratio_threshold"),
+                            data.getBoolean("static_ratio_threshold_inclusive"))
         ).allowCondition());
 
         System.out.println("[Alluysl's Origins] Powers registered.");

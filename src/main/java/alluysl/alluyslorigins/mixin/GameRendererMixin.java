@@ -5,6 +5,7 @@ import alluysl.alluyslorigins.power.OverlayPower;
 import alluysl.alluyslorigins.util.OverlayInfo;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import io.github.apace100.origins.OriginsClient;
 import io.github.apace100.origins.registry.ModComponents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
@@ -183,6 +184,14 @@ public abstract class GameRendererMixin {
         ratio = power.profile.apply(ratio);
         if (power.flipProfileValue)
             ratio = 1.0F - ratio;
+        if (power.multiplyRatioByConfiguredStrength)
+            ratio *= OriginsClient.config.phantomizedOverlayStrength;
+        if (power.staticRatio){
+            if (ratio > power.staticRatioThreshold || power.staticRatioThresholdInclusive && ratio == power.staticRatioThreshold)
+                ratio = OriginsClient.config.phantomizedOverlayStrength;
+            else
+                ratio = 0.0F;
+        }
         return ratio;
     }
 
