@@ -3,11 +3,45 @@
 	"description": "You're half a block taller, be careful with those door frames!",
 	"type": "origins:action_on_callback",
 	"entity_action_added": {
-		"type": "origins:execute_command",
-		"command": "scale set pehkui:height 1.25 @s"
+		"type": "origins:and",
+		"actions": [
+			{
+				"type": "origins:execute_command",
+				"command": "scale delay set pehkui:height 0 @s"
+			},
+			{
+				"type": "origins:execute_command",
+				"command": "scale set pehkui:height 1.25 @s"
+			},
+			{
+				"type": "origins:delay",
+				"ticks": 20,
+				"action": {
+					"type": "origins:execute_command",
+					"command": "scale delay reset pehkui:height"
+				}
+			}
+		]
 	},
 	"entity_action_removed": {
-		"type": "origins:execute_command",
-		"command": "scale set pehkui:height 1 @s"
+		"type": "origins:and",
+		"actions": [
+			{
+				"type": "origins:execute_command",
+				"command": "scale delay set pehkui:height 0 @s"
+			},
+			{
+				"type": "origins:execute_command",
+				"command": "scale set pehkui:height 1 @s"
+			},
+			{
+				"type": "origins:delay",
+				"ticks": 20,
+				"action": {
+					"type": "origins:execute_command",
+					"command": "scale delay reset pehkui:height"
+				}
+			}
+		]
 	}
 }
