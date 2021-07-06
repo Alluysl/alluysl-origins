@@ -2,9 +2,11 @@ package alluysl.alluyslorigins.power;
 
 import alluysl.alluyslorigins.AlluyslOrigins;
 import io.github.apace100.origins.power.factory.PowerFactory;
+import io.github.apace100.origins.power.factory.condition.ConditionFactory;
 import io.github.apace100.origins.registry.ModRegistries;
 import io.github.apace100.origins.util.SerializableData;
 import io.github.apace100.origins.util.SerializableDataType;
+import net.minecraft.block.pattern.CachedBlockPosition;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -107,6 +109,19 @@ public class AlluyslOriginsPowers {
                             data.getBoolean("static_ratio"),
                             data.getFloat("static_ratio_threshold"),
                             data.getBoolean("static_ratio_threshold_inclusive"))
+        ).allowCondition());
+
+        //noinspection unchecked
+        register(new PowerFactory<>(
+                new Identifier(AlluyslOrigins.MODID, "modify_slipperiness"),
+                new SerializableData()
+                        .add("value", SerializableDataType.FLOAT)
+                        .add("block_condition", SerializableDataType.BLOCK_CONDITION, null)
+                        .add("affect_boats", SerializableDataType.BOOLEAN, false),
+                data -> (type, player) -> new ModifySlipperinessPower(type, player,
+                        data.getFloat("value"),
+                        (ConditionFactory<CachedBlockPosition>.Instance)data.get("block_condition"),
+                        data.getBoolean("affect_boats"))
         ).allowCondition());
 
         System.out.println("[Alluysl's Origins] Powers registered.");

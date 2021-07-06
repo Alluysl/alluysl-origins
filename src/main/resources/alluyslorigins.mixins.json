@@ -4,6 +4,8 @@
   "package": "alluysl.alluyslorigins.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "BoatEntityMixin",
+    "LivingEntityMixin"
   ],
   "client": [
     "GameRendererMixin"
