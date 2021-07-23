@@ -10,7 +10,7 @@ A Fabric-only mod that adds two origins for now, and should add more in the futu
 
 To get the mod, check its [releases](https://github.com/Alluysl/alluysl-origins/releases), download the JAR file of your version of choice and put it in your mods folder.
 
-Make sure you have [this version of Origins](https://github.com/Alluysl/origins-fabric/releases/tag/0.7.3%2Bfix) if you use a 1.2 version of my mod or over, and version [0.7.2](https://www.curseforge.com/minecraft/mc-mods/origins/files/3318365) or [0.7.3](https://www.curseforge.com/minecraft/mc-mods/origins/files/3319081) otherwise (lower versions may work but I can't guarantee they will). You will need the Fabric API and Pehkui as well.
+Make sure you have [this version of Origins](https://github.com/Alluysl/origins-fabric/releases/tag/v0.8.1) if you use a 1.2 version of my mod or over, and version [0.7.2](https://www.curseforge.com/minecraft/mc-mods/origins/files/3318365) or [0.7.3](https://www.curseforge.com/minecraft/mc-mods/origins/files/3319081) otherwise (lower versions may work but I can't guarantee they will). You will need the Fabric API and Pehkui as well.
 
 **║** Like most (all, as far as I know) Origins addons, this mod runs on [Fabric](https://fabricmc.net/) only, and not on Forge. I will **not** make a Forge port. If you're willing to do so yourself, feel free to make your own fork as long as you give proper credit. **║**
 
