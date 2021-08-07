@@ -23,7 +23,7 @@
 			}
 		]
 	},
-	"entity_action_removed": {
+	"entity_action_lost": {
 		"type": "origins:and",
 		"actions": [
 			{
